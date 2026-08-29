@@ -1,5 +1,26 @@
-import { capitulos, ejecucion, hipoteca, proyecto } from "./proyecto";
+import { capitulos, ejecucion, financiacion, hipoteca, proyecto } from "./proyecto";
 import type { DatosHoja } from "./hoja";
+
+/**
+ * Capacidad de financiación: el banco presta un porcentaje del MENOR entre la
+ * tasación y el coste total de la promoción (ejecución más suelo escriturado).
+ */
+export function calcularCapacidad() {
+  const costePromocion = financiacion.costeEjecucionProyecto + financiacion.valorSueloEscriturado;
+  const base = Math.min(hipoteca.tasacion, costePromocion);
+
+  return {
+    costePromocion,
+    tasacion: hipoteca.tasacion,
+    base,
+    baseEsCoste: costePromocion <= hipoteca.tasacion,
+    limiteTeorico: base * financiacion.porcentajeMaximo,
+    ofrecido: hipoteca.importeMaximoOfrecido,
+    porcentajeOfrecido: hipoteca.importeMaximoOfrecido / base,
+    disposicionPrevista: hipoteca.disposicionPrevista,
+    margenSinUsar: hipoteca.importeMaximoOfrecido - hipoteca.disposicionPrevista,
+  };
+}
 
 export function calcularEjecucion() {
   const baseContrato = ejecucion.contratoPrincipal;
@@ -43,10 +64,41 @@ export function calcularProyecto(hoja: DatosHoja) {
   const avance = totalProyecto > 0 ? pagado / totalProyecto : 0;
 
   const hipotecaImporte = hipoteca.disposicionPrevista;
-  const fondosPropiosProyecto = totalProyecto - hipotecaImporte;
-  const fondosPropiosConReserva = totalConReserva - hipotecaImporte;
-  const fondosPropiosEjecucion = obra.total - hipotecaImporte;
-  const fondosPropiosRestantes = fondosPropiosProyecto - pagado;
+
+  // La hipoteca financia obra ejecutada. El IVA y todo lo que no es obra
+  // (suelo, impuestos, honorarios, tasación, mobiliario) sale de ahorros.
+  const obraFinanciable = obra.base;
+  const cubiertoPorHipoteca = Math.min(hipotecaImporte, obraFinanciable);
+  const obraSinCubrir = obraFinanciable - cubiertoPorHipoteca;
+  const excedenteHipoteca = Math.max(0, hipotecaImporte - obraFinanciable);
+
+  // Vale para cualquier disposición: lo que no presta el banco, lo ponemos.
+  const ahorrosNecesarios = Math.max(0, totalProyecto - hipotecaImporte);
+  const ahorrosConReserva = Math.max(0, totalConReserva - hipotecaImporte);
+  const ahorrosRestantes = ahorrosNecesarios - pagado;
+
+  /** Desglose de lo que no cubre la hipoteca, en el orden en que se paga. */
+  const desgloseAhorros = [
+    ...hoja.grupos.map((g) => ({
+      concepto: g.nombre,
+      importe: g.total,
+      pagado: g.pagado,
+    })),
+    {
+      concepto: `IVA de la ejecución (${(ejecucion.ivaTipo * 100).toFixed(0)}%)`,
+      importe: Math.max(0, obra.iva - excedenteHipoteca),
+      pagado: 0,
+    },
+    ...(obraSinCubrir > 0
+      ? [
+          {
+            concepto: "Obra por encima de la disposición prevista",
+            importe: obraSinCubrir,
+            pagado: 0,
+          },
+        ]
+      : []),
+  ].filter((d) => d.importe > 0);
 
   return {
     obra,
@@ -59,15 +111,25 @@ export function calcularProyecto(hoja: DatosHoja) {
     pendiente,
     avance,
     hipotecaImporte,
-    fondosPropiosProyecto,
-    fondosPropiosConReserva,
-    fondosPropiosEjecucion,
-    fondosPropiosRestantes,
-    coberturaHipotecaEjecucion: hipotecaImporte / obra.total,
+    obraFinanciable,
+    cubiertoPorHipoteca,
+    obraSinCubrir,
+    excedenteHipoteca,
+    ahorrosNecesarios,
+    ahorrosConReserva,
+    ahorrosRestantes,
+    desgloseAhorros,
     coberturaHipotecaProyecto: hipotecaImporte / totalProyecto,
     ltv: hipotecaImporte / hipoteca.tasacion,
     costeM2Proyecto: totalProyecto / proyecto.superficieConstruida,
     plusvaliaTeorica: hipoteca.tasacion - totalProyecto,
+    /** Cuántos ahorros harían falta con cada nivel de disposición. */
+    escenarios: financiacion.escenarios.map((e) => ({
+      ...e,
+      ahorros: Math.max(0, totalProyecto - e.disposicion),
+      ahorrosRestantes: Math.max(0, totalProyecto - e.disposicion - pagado),
+      esActual: e.disposicion === hipotecaImporte,
+    })),
   };
 }
 

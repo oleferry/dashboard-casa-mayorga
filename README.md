@@ -47,16 +47,15 @@ El parser (`lib/hoja.ts`) espera estas columnas, con las letras actuales:
 | H | Precio |
 | K / L | Impuestos (% e importe) |
 | M | Total |
-| N / O | Pagado A / Pagado B |
+| N / O | Pagado A / Pagado B — declarado / en efectivo |
 | P | Pendiente |
 
 Una fila se trata como **cabecera de grupo** si tiene Concepto pero no Desglose,
 ni Descripción, ni Unidades. Sólo las filas de detalle suman, para no duplicar.
 
-> **Mejora recomendada:** añadir una columna `Fecha` junto a `Pagado`. En cuanto
-> exista, el panel podrá dibujar la evolución del gasto en el tiempo. De momento
-> sólo se muestran las fechas verificadas contra recibos, listadas en
-> `fechasPago` dentro de `lib/proyecto.ts`.
+Las columnas «Pagado A» y «Pagado B» no distinguen personas —la cuenta es
+común— sino si el pago queda documentado. Sus etiquetas se configuran en
+`pagadores`, dentro de `lib/proyecto.ts`.
 
 ### 2. Datos maestros (en el repositorio)
 
@@ -71,6 +70,26 @@ Todo lo que no vive en la hoja se edita en archivos TypeScript:
 Para actualizar el panel basta con editar esos archivos y hacer push: Vercel
 despliega automáticamente.
 
+
+### 3. Modelo de financiación
+
+El banco presta un porcentaje del **menor** entre la tasación del edificio
+terminado y el coste total de la promoción (presupuesto de ejecución del
+proyecto más el valor escriturado del suelo). Aquí manda el coste:
+
+```
+min(424.018,80 ; 361.327,16 + 11.000) = 372.327,16 × 80% = 297.861,73
+```
+
+De ahí la oferta de 296.000 € de Unicaja. La hipoteca financia obra ejecutada:
+el IVA, los impuestos, los honorarios técnicos, el suelo y el mobiliario salen
+de ahorros. Los parámetros están en `financiacion`, en `lib/proyecto.ts`, junto
+con los escenarios de disposición que el panel compara.
+
+> **Mejora recomendada:** añadir una columna `Fecha` junto a `Pagado`. En cuanto
+> exista, el panel podrá dibujar la evolución del gasto en el tiempo. De momento
+> sólo se muestran las fechas verificadas contra recibos, listadas en
+> `fechasPago` dentro de `lib/proyecto.ts`.
 ---
 
 ## Actualizar el snapshot de respaldo

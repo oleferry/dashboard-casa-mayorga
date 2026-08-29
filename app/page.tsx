@@ -19,11 +19,11 @@ import {
   Td,
   Th,
 } from "@/components/ui";
-import { calcularHipoteca, calcularProyecto } from "@/lib/calculos";
+import { calcularCapacidad, calcularHipoteca, calcularProyecto } from "@/lib/calculos";
 import { hojaCostes } from "@/lib/documentos";
 import { euros, fechaCorta, num, pct } from "@/lib/formato";
 import { leerHoja } from "@/lib/hoja";
-import { ejecucion, fechasPago, hipoteca, proyecto } from "@/lib/proyecto";
+import { ejecucion, fechasPago, financiacion, hipoteca, pagadores, proyecto } from "@/lib/proyecto";
 
 export const revalidate = 300;
 
@@ -31,6 +31,7 @@ export default async function Panel_() {
   const hoja = await leerHoja(fechasPago);
   const c = calcularProyecto(hoja);
   const h = calcularHipoteca();
+  const cap = calcularCapacidad();
 
   return (
     <>
@@ -66,109 +67,205 @@ export default async function Panel_() {
               destacado
             />
             <Kpi
-              etiqueta="Pagado a fecha"
-              valor={euros(c.pagado)}
-              nota={`${pct(c.avance)} del coste total, todo con fondos propios`}
+              etiqueta="Cubre la hipoteca"
+              valor={euros(c.hipotecaImporte)}
+              nota={`${pct(c.coberturaHipotecaProyecto)} del coste total · LTV ${pct(c.ltv)} sobre tasación`}
               tono="marca"
             />
             <Kpi
-              etiqueta="Pendiente de pago"
-              valor={euros(c.pendiente)}
-              nota={`${euros(c.otrosPendiente)} fuera de obra + ${euros(c.obra.total)} de ejecución`}
+              etiqueta="Ahorros necesarios"
+              valor={euros(c.ahorrosNecesarios)}
+              nota="IVA, impuestos, honorarios, suelo y lo que quede de obra fuera de la disposición"
               tono="aviso"
             />
             <Kpi
-              etiqueta="Hipoteca prevista"
-              valor={euros(c.hipotecaImporte)}
-              nota={`${pct(c.coberturaHipotecaProyecto)} del coste total · LTV ${pct(c.ltv)} sobre tasación`}
+              etiqueta="Ahorros ya aportados"
+              valor={euros(c.pagado)}
+              nota={`${pct(c.pagado / c.ahorrosNecesarios)} de los ahorros que hacen falta`}
+              tono="marca"
             />
             <Kpi
-              etiqueta="Fondos propios que faltan"
-              valor={euros(c.fondosPropiosRestantes)}
-              nota={`Sobre ${euros(c.fondosPropiosProyecto)} totales; ya se han aportado ${euros(c.pagado)}`}
+              etiqueta="Ahorros que faltan"
+              valor={euros(c.ahorrosRestantes)}
+              nota={`${euros(c.ahorrosConReserva - c.pagado)} si se consume la reserva del 5%`}
               tono="critico"
             />
             <Kpi
-              etiqueta="Coste bancario mensual"
-              valor={`${euros(h.costeMensual)}/mes`}
-              nota={`Cuota ${euros(hipoteca.cuotaMensual)} + seguro de hogar ${euros(h.seguroMensual)}`}
+              etiqueta="Margen de hipoteca sin usar"
+              valor={euros(cap.margenSinUsar)}
+              nota={`Unicaja ofrece ${euros(cap.ofrecido)} y sólo hay previsto disponer ${euros(cap.disposicionPrevista)}`}
+              tono="aviso"
             />
           </div>
 
           <div className="mt-4 grid gap-4 lg:grid-cols-3">
             <Panel className="lg:col-span-2">
-              <h3 className="mb-1 text-sm font-semibold">Cómo se financia el proyecto</h3>
+              <h3 className="mb-1 text-sm font-semibold">
+                Qué cubre la hipoteca y qué sale de ahorros
+              </h3>
               <p className="suave mb-4 text-xs leading-relaxed">
-                Sobre el coste total de {euros(c.totalProyecto)}, sin contar la reserva para
-                desviaciones.
+                La hipoteca financia obra ejecutada. El IVA y todo lo que no es obra —suelo,
+                impuestos, honorarios, tasación, mobiliario— sale de ahorros.
               </p>
               <BarraApilada
                 formato={euros}
                 tramos={[
-                  { etiqueta: "Hipoteca Unicaja", valor: c.hipotecaImporte, color: "var(--marca)" },
                   {
-                    etiqueta: "Fondos propios ya aportados",
-                    valor: c.pagado,
-                    color: "var(--aviso)",
+                    etiqueta: "Obra cubierta por la hipoteca",
+                    valor: c.cubiertoPorHipoteca,
+                    color: "var(--marca)",
                   },
+                  { etiqueta: "Ahorros ya aportados", valor: c.pagado, color: "var(--aviso)" },
                   {
-                    etiqueta: "Fondos propios pendientes",
-                    valor: c.fondosPropiosRestantes,
+                    etiqueta: "Ahorros que faltan",
+                    valor: c.ahorrosRestantes,
                     color: "var(--critico)",
                   },
                 ]}
               />
 
-              <div className="mt-6 grid gap-4 border-t pt-4 sm:grid-cols-2">
-                <div>
-                  <p className="suave mb-2 text-[0.7rem] font-medium tracking-[0.06em] uppercase">
-                    Sólo ejecución de obra
-                  </p>
-                  <ListaDatos
-                    datos={[
-                      { clave: "Ejecución con IVA", valor: euros(c.obra.total) },
-                      { clave: "Hipoteca", valor: `−${euros(c.hipotecaImporte)}` },
-                      {
-                        clave: "Aportación propia",
-                        valor: (
-                          <span style={{ color: "var(--aviso)" }}>
-                            {euros(c.fondosPropiosEjecucion)}
-                          </span>
-                        ),
-                      },
-                    ]}
-                  />
-                </div>
-                <div>
-                  <p className="suave mb-2 text-[0.7rem] font-medium tracking-[0.06em] uppercase">
-                    Proyecto completo
-                  </p>
-                  <ListaDatos
-                    datos={[
-                      { clave: "Coste total", valor: euros(c.totalProyecto) },
-                      { clave: "Hipoteca", valor: `−${euros(c.hipotecaImporte)}` },
-                      {
-                        clave: "Aportación propia",
-                        valor: (
-                          <span style={{ color: "var(--critico)" }}>
-                            {euros(c.fondosPropiosProyecto)}
-                          </span>
-                        ),
-                      },
-                    ]}
-                  />
-                </div>
+              <div className="mt-6 border-t pt-4">
+                <p className="suave mb-2 text-[0.7rem] font-medium tracking-[0.06em] uppercase">
+                  Desglose de lo que no cubre la hipoteca
+                </p>
+                <ListaDatos
+                  datos={[
+                    ...c.desgloseAhorros.map((d) => ({
+                      clave: d.concepto,
+                      nota:
+                        d.pagado >= d.importe
+                          ? "pagado"
+                          : d.pagado > 0
+                            ? `${euros(d.pagado)} pagado`
+                            : "pendiente",
+                      valor: (
+                        <span
+                          style={{
+                            color: d.pagado >= d.importe ? "var(--marca)" : "var(--tinta)",
+                          }}
+                        >
+                          {euros(d.importe)}
+                        </span>
+                      ),
+                    })),
+                    {
+                      clave: "Total de ahorros necesarios",
+                      valor: (
+                        <span className="font-semibold" style={{ color: "var(--critico)" }}>
+                          {euros(c.ahorrosNecesarios)}
+                        </span>
+                      ),
+                    },
+                  ]}
+                />
               </div>
 
               <p className="tenue mt-4 border-t pt-3 text-xs leading-relaxed">
-                Con la reserva del 5% sobre la ejecución ({euros(c.obra.reserva)}), la aportación
-                propia total sube a <strong>{euros(c.fondosPropiosConReserva)}</strong>. La tasación
-                en hipótesis de edificio terminado es de {euros(hipoteca.tasacion)}, es decir{" "}
+                Con la reserva del 5% sobre la ejecución ({euros(c.obra.reserva)}), los ahorros
+                necesarios suben a <strong>{euros(c.ahorrosConReserva)}</strong>. La tasación en
+                hipótesis de edificio terminado es de {euros(hipoteca.tasacion)}, es decir{" "}
                 {euros(c.plusvaliaTeorica)} por encima del coste total previsto.
               </p>
             </Panel>
 
             <FichaProyecto />
+          </div>
+
+          <div className="mt-4 grid gap-4 lg:grid-cols-2">
+            <Panel>
+              <h3 className="mb-1 text-sm font-semibold">Cuánto puede prestar el banco</h3>
+              <p className="suave mb-3 text-xs leading-relaxed">
+                En autopromoción el banco aplica su porcentaje sobre el <strong>menor</strong> de
+                dos valores: la tasación del edificio terminado o el coste total de la promoción.
+              </p>
+              <ListaDatos
+                datos={[
+                  {
+                    clave: "Presupuesto de ejecución del proyecto",
+                    valor: euros(financiacion.costeEjecucionProyecto),
+                  },
+                  {
+                    clave: "Valor del suelo escriturado",
+                    valor: euros(financiacion.valorSueloEscriturado),
+                  },
+                  {
+                    clave: "Coste total de la promoción",
+                    valor: <span className="font-semibold">{euros(cap.costePromocion)}</span>,
+                  },
+                  { clave: "Tasación del edificio terminado", valor: euros(cap.tasacion) },
+                  {
+                    clave: "Base de cálculo",
+                    nota: cap.baseEsCoste ? "manda el coste, es menor" : "manda la tasación",
+                    valor: <span style={{ color: "var(--marca)" }}>{euros(cap.base)}</span>,
+                  },
+                  {
+                    clave: `Límite teórico al ${pct(financiacion.porcentajeMaximo, 0)}`,
+                    valor: euros(cap.limiteTeorico),
+                  },
+                  {
+                    clave: "Ofrecido por Unicaja",
+                    nota: `${pct(cap.porcentajeOfrecido)} de la base`,
+                    valor: <span className="font-semibold">{euros(cap.ofrecido)}</span>,
+                  },
+                ]}
+              />
+            </Panel>
+
+            <Panel>
+              <h3 className="mb-1 text-sm font-semibold">Ahorros según lo que se disponga</h3>
+              <p className="suave mb-3 text-xs leading-relaxed">
+                Cuanto más se disponga de la hipoteca, menos ahorros hacen falta. El límite lo pone
+                lo que el banco acepte certificar.
+              </p>
+              <div className="overflow-x-auto">
+                <table className="w-full min-w-[24rem] border-collapse text-sm">
+                  <thead>
+                    <tr>
+                      <Th>Escenario</Th>
+                      <Th numero ancho="7rem">Disposición</Th>
+                      <Th numero ancho="7rem">Ahorros</Th>
+                      <Th numero ancho="7rem">Faltarían</Th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {c.escenarios.map((e) => (
+                      <tr
+                        key={e.etiqueta}
+                        style={e.esActual ? { background: "var(--panel-2)" } : undefined}
+                      >
+                        <Td>
+                          <span className="flex flex-wrap items-center gap-2">
+                            <span className="leading-snug">{e.etiqueta}</span>
+                            {e.esActual && <Etiqueta tono="marca">actual</Etiqueta>}
+                          </span>
+                          <span className="suave mt-0.5 block text-xs leading-snug">{e.nota}</span>
+                        </Td>
+                        <Td numero>{euros(e.disposicion)}</Td>
+                        <Td numero fuerte>
+                          {euros(e.ahorros)}
+                        </Td>
+                        <Td numero>
+                          <span style={{ color: "var(--critico)" }}>
+                            {euros(e.ahorrosRestantes)}
+                          </span>
+                        </Td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <p className="tenue mt-3 border-t pt-3 text-xs leading-relaxed">
+                «Faltarían» descuenta los {euros(c.pagado)} ya aportados. Pasar de disponer{" "}
+                {euros(cap.disposicionPrevista)} a {euros(cap.ofrecido)} ahorraría{" "}
+                <strong>{euros(cap.margenSinUsar)}</strong> de bolsillo, a cambio de{" "}
+                {euros(
+                  (cap.ofrecido * (hipoteca.tinFinal / 12)) /
+                    (1 - Math.pow(1 + hipoteca.tinFinal / 12, -hipoteca.plazoMeses)) -
+                    hipoteca.cuotaMensual,
+                )}
+                /mes más de cuota.
+              </p>
+            </Panel>
           </div>
         </Seccion>
 
@@ -194,9 +291,9 @@ export default async function Panel_() {
             <Kpi etiqueta="Pagado" valor={euros(hoja.pagado)} tono="marca" />
             <Kpi etiqueta="Pendiente" valor={euros(hoja.pendiente)} tono="aviso" />
             <Kpi
-              etiqueta="Reparto entre pagadores"
+              etiqueta={`${pagadores.a.etiqueta} / ${pagadores.b.etiqueta}`}
               valor={`${euros(hoja.pagadoA)} / ${euros(hoja.pagadoB)}`}
-              nota="Pagador A / Pagador B, según columnas de la hoja"
+              nota={`${euros(hoja.pagadoB)} sin reflejo documental: no acreditable ante el banco`}
             />
           </div>
 
@@ -275,6 +372,11 @@ export default async function Panel_() {
                             <span style={{ color: l.pagado > 0 ? "var(--marca)" : "var(--suave)" }}>
                               {euros(l.pagado)}
                             </span>
+                            {l.pagadoB > 0 && (
+                              <span className="suave block text-xs">
+                                {euros(l.pagadoB)} en efectivo
+                              </span>
+                            )}
                           </Td>
                           <Td numero>
                             <span

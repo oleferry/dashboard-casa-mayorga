@@ -10,7 +10,7 @@ import {
 } from "./ui";
 import { euros, fecha, fechaCorta, num, pct } from "@/lib/formato";
 import { calcularCapitulos, calcularHipoteca } from "@/lib/calculos";
-import { alertas, hipoteca, hitos, proyecto } from "@/lib/proyecto";
+import { alertas, financiacion, hipoteca, hitos, proyecto } from "@/lib/proyecto";
 import { gruposDocumentales } from "@/lib/documentos";
 
 /* ------------------------------------------------------- Capítulos de obra */
@@ -340,18 +340,20 @@ export function FichaProyecto() {
         datos={[
           { clave: "Superficie construida", valor: `${num(proyecto.superficieConstruida)} m²` },
           {
-            clave: "Parcela (proyecto y Catastro)",
-            valor: `${num(proyecto.superficieParcelaProyecto)} m²`,
-          },
-          {
-            clave: "Parcela (Registro)",
+            clave: "Parcela",
+            nota: "Registro, Catastro y proyecto ya coinciden",
             valor: (
-              <span style={{ color: "var(--aviso)" }}>
-                {num(proyecto.superficieParcelaRegistro)} m²
+              <span style={{ color: "var(--marca)" }}>
+                {num(proyecto.superficieParcela)} m²
               </span>
             ),
           },
           { clave: "Referencia catastral", valor: proyecto.referenciaCatastral },
+          {
+            clave: "Valor del suelo escriturado",
+            nota: "Base que computa el banco",
+            valor: euros(financiacion.valorSueloEscriturado),
+          },
           {
             clave: "Proyecto visado",
             valor: `${proyecto.expedienteVisado} · ${fechaCorta(proyecto.fechaVisado)}`,

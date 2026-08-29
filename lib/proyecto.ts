@@ -10,8 +10,9 @@ export const proyecto = {
   constructor: "Polo Redondo (Madapan)",
   arquitecto: "Alberto Magdaleno de la Viuda — AM Arquitectos",
   superficieConstruida: 253.3,
-  superficieParcelaProyecto: 516.6,
-  superficieParcelaRegistro: 336,
+  /** Registro, Catastro y proyecto ya coinciden tras la rectificación de superficie. */
+  superficieParcela: 516.6,
+  superficieParcelaAnterior: 336,
   referenciaCatastral: "3010501UM1731S0001SW",
   expedienteVisado: "2025-00624",
   fechaVisado: "2025-10-08",
@@ -72,6 +73,56 @@ export const capitulos = [
   { codigo: "CAP 14", nombre: "Control de calidad", importe: 750 },
   { codigo: "CAP 15", nombre: "Gestión de residuos", importe: 650 },
 ];
+
+/**
+ * Cómo calcula el banco cuánto puede prestar en una hipoteca de
+ * autopromoción: un porcentaje del MENOR de dos valores, la tasación en
+ * hipótesis de edificio terminado o el coste total de la promoción
+ * (presupuesto de ejecución más el valor escriturado del suelo).
+ */
+export const financiacion = {
+  porcentajeMaximo: 0.8,
+  /** Valor del suelo según escritura. Es el que computa el banco. */
+  valorSueloEscriturado: 11000,
+  /** Presupuesto de ejecución del proyecto técnico visado. */
+  costeEjecucionProyecto: 361327.16,
+  /**
+   * Escenarios de disposición del préstamo. El objetivo declarado es no tocar
+   * ahorros salvo para lo que la hipoteca no puede cubrir.
+   */
+  escenarios: [
+    {
+      etiqueta: "Disposición prevista",
+      disposicion: 265000,
+      nota: "Cubre el contrato principal con el constructor",
+    },
+    {
+      etiqueta: "Toda la ejecución sin IVA",
+      disposicion: 280000,
+      nota: "Contrato principal más los 15.000 € facturados aparte",
+    },
+    {
+      etiqueta: "Máximo ofrecido por Unicaja",
+      disposicion: 296000,
+      nota: "Techo de la oferta; absorbería también parte del IVA",
+    },
+  ],
+};
+
+/**
+ * Las dos columnas de pago de la hoja. No distinguen personas: la cuenta es
+ * común. Distinguen si el pago queda documentado o no.
+ */
+export const pagadores = {
+  a: {
+    etiqueta: "Declarado",
+    descripcion: "Pagos con reflejo documental, justificables ante el banco",
+  },
+  b: {
+    etiqueta: "En efectivo",
+    descripcion: "Pagos en metálico, sin reflejo documental",
+  },
+};
 
 /** Hipoteca seleccionada. */
 export const hipoteca = {
@@ -145,7 +196,11 @@ export const hitos = [
   { fecha: "2025-12-19", titulo: "Pago del ICIO — 2.436,01 €", estado: "hecho" },
   { fecha: "2026-01-07", titulo: "Licencia de obra concedida", estado: "hecho" },
   { fecha: "2026-02-23", titulo: "Presupuesto de Polo Redondo — 297.395 € + IVA", estado: "hecho" },
-  { fecha: "2026-03-18", titulo: "Acta de rectificación de superficie de la parcela", estado: "hecho" },
+  {
+    fecha: "2026-03-18",
+    titulo: "Rectificación de superficie: el Registro pasa de 336 a 516,60 m² y cuadra con el Catastro",
+    estado: "hecho",
+  },
   { fecha: "2026-07-08", titulo: "Resumen de presupuesto actualizado del constructor", estado: "hecho" },
   { fecha: "2026-07-16", titulo: "Tasación en hipótesis de edificio terminado — 424.018,80 €", estado: "hecho" },
   { fecha: "2026-08-28", titulo: "Unicaja seleccionada como entidad financiadora", estado: "hecho" },
@@ -162,15 +217,21 @@ export const alertas = [
   },
   {
     nivel: "alta",
-    titulo: "Discrepancia de superficie de parcela",
+    titulo: "Confirmar qué admite el banco como disposición",
     detalle:
-      "El Registro refleja 336 m² y el proyecto y el Catastro 516,60 m². Existe acta de rectificación de superficie; hay que confirmar que la inscripción ha quedado firme.",
+      "Unicaja ofrece hasta 296.000 € y sólo hay previsto disponer 265.000 €. Antes de firmar conviene aclarar si las certificaciones se liberan con IVA o sin él, y si los 15.000 € facturados aparte son certificables. De ello depende que haya que poner 73.078 € de ahorros o bastante menos.",
+  },
+  {
+    nivel: "media",
+    titulo: "Justificación de la aportación de fondos propios",
+    detalle:
+      "El banco pide acreditar los fondos propios ya aportados. De los pagos hechos hasta ahora, 5.000 € del suelo se abonaron en efectivo y no se pueden justificar con transferencia ni factura. Conviene tenerlo previsto antes de la firma.",
   },
   {
     nivel: "media",
     titulo: "Mecánica de disposiciones durante la obra",
     detalle:
-      "Confirmar por escrito con Unicaja cómo funcionan las certificaciones, qué porcentaje se libera en cada una y cómo se calculan las cuotas antes de la disposición total.",
+      "Confirmar por escrito con Unicaja qué porcentaje se libera en cada certificación y cómo se calculan las cuotas antes de la disposición total.",
   },
   {
     nivel: "media",
