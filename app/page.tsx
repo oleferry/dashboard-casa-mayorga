@@ -19,7 +19,12 @@ import {
   Td,
   Th,
 } from "@/components/ui";
-import { calcularCapacidad, calcularHipoteca, calcularProyecto } from "@/lib/calculos";
+import {
+  calcularCapacidad,
+  calcularHipoteca,
+  calcularProyecto,
+  cuotaFrancesa,
+} from "@/lib/calculos";
 import { hojaCostes } from "@/lib/documentos";
 import { euros, fechaCorta, num, pct } from "@/lib/formato";
 import { leerHoja } from "@/lib/hoja";
@@ -69,32 +74,31 @@ export default async function Panel_() {
             <Kpi
               etiqueta="Cubre la hipoteca"
               valor={euros(c.hipotecaImporte)}
-              nota={`${pct(c.coberturaHipotecaProyecto)} del coste total · LTV ${pct(c.ltv)} sobre tasación`}
+              nota={`Contrato de ${euros(hipoteca.disposicionContrato)} más un ${pct(hipoteca.desviacionPrevista, 0)} de desviación · LTV ${pct(c.ltv)}`}
               tono="marca"
             />
             <Kpi
               etiqueta="Ahorros necesarios"
               valor={euros(c.ahorrosNecesarios)}
-              nota="IVA, impuestos, honorarios, suelo y lo que quede de obra fuera de la disposición"
+              nota={`IVA, impuestos, honorarios y suelo · ${euros(c.pagado)} ya aportados (${pct(c.pagado / c.ahorrosNecesarios)})`}
               tono="aviso"
-            />
-            <Kpi
-              etiqueta="Ahorros ya aportados"
-              valor={euros(c.pagado)}
-              nota={`${pct(c.pagado / c.ahorrosNecesarios)} de los ahorros que hacen falta`}
-              tono="marca"
             />
             <Kpi
               etiqueta="Ahorros que faltan"
               valor={euros(c.ahorrosRestantes)}
-              nota={`${euros(c.ahorrosConReserva - c.pagado)} si se consume la reserva del 5%`}
+              nota={`${euros(c.ahorrosConReserva - c.pagado)} si la obra se desvía un 5% sobre lo presupuestado`}
               tono="critico"
             />
             <Kpi
               etiqueta="Margen de hipoteca sin usar"
               valor={euros(cap.margenSinUsar)}
-              nota={`Unicaja ofrece ${euros(cap.ofrecido)} y sólo hay previsto disponer ${euros(cap.disposicionPrevista)}`}
+              nota={`Queda por debajo del máximo de ${euros(cap.ofrecido)} que ofrece Unicaja`}
               tono="aviso"
+            />
+            <Kpi
+              etiqueta="Coste bancario mensual"
+              valor={`${euros(h.costeMensual)}/mes`}
+              nota={`Cuota ${euros(h.cuotaMensual)} + seguro de hogar ${euros(h.seguroMensual)}`}
             />
           </div>
 
@@ -161,10 +165,13 @@ export default async function Panel_() {
               </div>
 
               <p className="tenue mt-4 border-t pt-3 text-xs leading-relaxed">
-                Con la reserva del 5% sobre la ejecución ({euros(c.obra.reserva)}), los ahorros
-                necesarios suben a <strong>{euros(c.ahorrosConReserva)}</strong>. La tasación en
-                hipótesis de edificio terminado es de {euros(hipoteca.tasacion)}, es decir{" "}
-                {euros(c.plusvaliaTeorica)} por encima del coste total previsto.
+                La disposición prevista ya incluye un {pct(hipoteca.desviacionPrevista, 0)} sobre el
+                contrato ({euros(hipoteca.disposicionPrevista - hipoteca.disposicionContrato)}) como
+                colchón. Si la obra llega a desviarse ese {pct(hipoteca.desviacionPrevista, 0)} de
+                verdad ({euros(c.obra.reserva)} con IVA), los ahorros necesarios suben a{" "}
+                <strong>{euros(c.ahorrosConReserva)}</strong>. La tasación en hipótesis de edificio
+                terminado es de {euros(hipoteca.tasacion)}, es decir {euros(c.plusvaliaTeorica)} por
+                encima del coste total previsto.
               </p>
             </Panel>
 
@@ -255,15 +262,11 @@ export default async function Panel_() {
                 </table>
               </div>
               <p className="tenue mt-3 border-t pt-3 text-xs leading-relaxed">
-                «Faltarían» descuenta los {euros(c.pagado)} ya aportados. Pasar de disponer{" "}
-                {euros(cap.disposicionPrevista)} a {euros(cap.ofrecido)} ahorraría{" "}
-                <strong>{euros(cap.margenSinUsar)}</strong> de bolsillo, a cambio de{" "}
-                {euros(
-                  (cap.ofrecido * (hipoteca.tinFinal / 12)) /
-                    (1 - Math.pow(1 + hipoteca.tinFinal / 12, -hipoteca.plazoMeses)) -
-                    hipoteca.cuotaMensual,
-                )}
-                /mes más de cuota.
+                «Faltarían» descuenta los {euros(c.pagado)} ya aportados. Cada 1.000 € más de
+                disposición son 1.000 € menos de bolsillo, a cambio de{" "}
+                {euros(cuotaFrancesa(1000, hipoteca.tinFinal, hipoteca.plazoMeses))}/mes más de
+                cuota. Llegar al máximo de {euros(cap.ofrecido)} liberaría{" "}
+                <strong>{euros(cap.margenSinUsar)}</strong> más.
               </p>
             </Panel>
           </div>

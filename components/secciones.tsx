@@ -93,7 +93,15 @@ export function SeccionHipoteca() {
           <ListaDatos
             datos={[
               { clave: "Importe máximo ofrecido", valor: euros(hipoteca.importeMaximoOfrecido) },
-              { clave: "Disposición prevista", valor: euros(hipoteca.disposicionPrevista) },
+              {
+                clave: "Disposición prevista",
+                nota: `Contrato de ${euros(hipoteca.disposicionContrato)} más un ${pct(hipoteca.desviacionPrevista, 0)} de desviación`,
+                valor: (
+                  <span style={{ color: "var(--marca)" }}>
+                    {euros(hipoteca.disposicionPrevista)}
+                  </span>
+                ),
+              },
               { clave: "Plazo", valor: `${h.anios} años` },
               { clave: "Carencia", valor: hipoteca.carencia ? "Sí" : "No" },
               { clave: "Tipo fijo sin bonificar", valor: pct(hipoteca.tinBase, 2) },
@@ -115,7 +123,7 @@ export function SeccionHipoteca() {
           <h3 className="mb-3 text-sm font-semibold">Coste mensual y total</h3>
           <ListaDatos
             datos={[
-              { clave: "Cuota hipotecaria", valor: `${euros(hipoteca.cuotaMensual)}/mes` },
+              { clave: "Cuota hipotecaria", valor: `${euros(h.cuotaMensual)}/mes` },
               { clave: "Seguro de hogar prorrateado", valor: `${euros(h.seguroMensual)}/mes` },
               {
                 clave: "Coste bancario recurrente",
@@ -124,13 +132,18 @@ export function SeccionHipoteca() {
                 ),
               },
               {
+                clave: "Cuota si sólo se dispusiera el contrato",
+                nota: `Sobre ${euros(hipoteca.disposicionContrato)}`,
+                valor: `${euros(h.cuotaSoloContrato)}/mes`,
+              },
+              {
                 clave: "Cuota si no se bonificara",
                 nota: `Al ${pct(hipoteca.tinBase, 2)}`,
                 valor: `${euros(h.cuotaSinBonificar)}/mes`,
               },
               {
                 clave: "Ahorro por bonificaciones",
-                valor: `${euros(h.cuotaSinBonificar - hipoteca.cuotaMensual)}/mes`,
+                valor: `${euros(h.cuotaSinBonificar - h.cuotaMensual)}/mes`,
               },
               { clave: "Total devuelto en 30 años", valor: euros(h.totalDevuelto) },
               { clave: "Intereses totales", valor: euros(h.totalIntereses) },

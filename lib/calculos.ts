@@ -157,16 +157,28 @@ export function calcularCapitulos() {
 }
 
 export function calcularHipoteca() {
+  const cuotaMensual = cuotaFrancesa(
+    hipoteca.disposicionPrevista,
+    hipoteca.tinFinal,
+    hipoteca.plazoMeses,
+  );
   const seguroMensual = hipoteca.seguroHogarAnual / 12;
-  const costeMensual = hipoteca.cuotaMensual + seguroMensual;
-  const totalIntereses = hipoteca.cuotaMensual * hipoteca.plazoMeses - hipoteca.disposicionPrevista;
+  const costeMensual = cuotaMensual + seguroMensual;
+  const totalIntereses = cuotaMensual * hipoteca.plazoMeses - hipoteca.disposicionPrevista;
 
   return {
+    cuotaMensual,
     seguroMensual,
     costeMensual,
     totalIntereses,
-    totalDevuelto: hipoteca.cuotaMensual * hipoteca.plazoMeses,
+    totalDevuelto: cuotaMensual * hipoteca.plazoMeses,
     anios: hipoteca.plazoMeses / 12,
+    /** Cuota si se dispusiera sólo el contrato, sin el margen de desviación. */
+    cuotaSoloContrato: cuotaFrancesa(
+      hipoteca.disposicionContrato,
+      hipoteca.tinFinal,
+      hipoteca.plazoMeses,
+    ),
     cuotaSinBonificar: cuotaFrancesa(
       hipoteca.disposicionPrevista,
       hipoteca.tinBase,

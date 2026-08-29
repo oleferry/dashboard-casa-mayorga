@@ -92,9 +92,14 @@ export const financiacion = {
    */
   escenarios: [
     {
-      etiqueta: "Disposición prevista",
+      etiqueta: "Sólo el contrato",
       disposicion: 265000,
-      nota: "Cubre el contrato principal con el constructor",
+      nota: "Sin margen para desviaciones de obra",
+    },
+    {
+      etiqueta: "Contrato más un 5% de desviación",
+      disposicion: 278250,
+      nota: "Deja dispuesto el colchón para absorber sobrecostes de obra",
     },
     {
       etiqueta: "Toda la ejecución sin IVA",
@@ -129,13 +134,20 @@ export const hipoteca = {
   entidad: "Unicaja",
   estado: "Seleccionada — pendiente de aprobación definitiva, FEIN y firma",
   importeMaximoOfrecido: 296000,
-  disposicionPrevista: 265000,
+  /**
+   * Disposición prevista: el contrato principal más un 5% de desviación, para
+   * dejar dispuesto el colchón de sobrecostes en lugar de cubrirlo con ahorros.
+   */
+  disposicionPrevista: 278250,
+  disposicionContrato: 265000,
+  desviacionPrevista: 0.05,
   plazoMeses: 360,
   carencia: false,
   tinBase: 0.034,
   bonificacionTotal: 0.0085,
   tinFinal: 0.0255,
-  cuotaMensual: 1053.97,
+  /** Cuota que ofreció el banco, para una disposición de 265.000 €. */
+  cuotaReferencia: { capital: 265000, cuota: 1053.97 },
   comisionApertura: 0,
   comisionAmortizacionAnticipada: 0.005,
   tasacion: 424018.8,
