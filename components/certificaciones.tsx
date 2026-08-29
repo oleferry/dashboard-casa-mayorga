@@ -221,30 +221,52 @@ export function SeccionCertificaciones({
 /* ------------------------------------------------------------ Estado vacío */
 
 function SinCertificaciones({ datos }: { datos: DatosCertificaciones }) {
+  const lista = datos.hayPestana;
+
   return (
     <Panel>
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <h3 className="text-sm font-semibold">Todavía no hay certificaciones</h3>
+          <h3 className="text-sm font-semibold">
+            {lista ? "La hoja está lista, aún sin certificaciones" : "Todavía no hay certificaciones"}
+          </h3>
           <p className="tenue mt-1 text-sm leading-relaxed">
             La primera factura de obra está prevista para el{" "}
             {fecha(proyecto.primeraFacturaPrevista)}.
           </p>
         </div>
-        <Etiqueta tono="neutro">a la espera</Etiqueta>
+        <Etiqueta tono={lista ? "marca" : "neutro"}>
+          {lista ? "pestaña lista" : "a la espera"}
+        </Etiqueta>
       </div>
 
       <div className="mt-5 border-t pt-4">
         <p className="text-sm leading-relaxed">
-          Para empezar a registrarlas, crea en la hoja de costes una pestaña llamada{" "}
-          <code
-            className="cifra rounded px-1.5 py-0.5 text-xs"
-            style={{ background: "var(--raya)" }}
-          >
-            {PESTANA}
-          </code>{" "}
-          con estas columnas en la primera fila. El panel la detectará sola en los siguientes 5
-          minutos.
+          {lista ? (
+            <>
+              La pestaña{" "}
+              <code
+                className="cifra rounded px-1.5 py-0.5 text-xs"
+                style={{ background: "var(--raya)" }}
+              >
+                {PESTANA}
+              </code>{" "}
+              ya existe en la hoja de costes. En cuanto añadas la primera fila aparecerá aquí, como
+              mucho 5 minutos después. Este es el significado de cada columna:
+            </>
+          ) : (
+            <>
+              Para empezar a registrarlas, crea en la hoja de costes una pestaña llamada{" "}
+              <code
+                className="cifra rounded px-1.5 py-0.5 text-xs"
+                style={{ background: "var(--raya)" }}
+              >
+                {PESTANA}
+              </code>{" "}
+              con estas columnas en la primera fila. El panel la detectará sola en los siguientes 5
+              minutos.
+            </>
+          )}
         </p>
 
         <div className="mt-4 overflow-x-auto">
