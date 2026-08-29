@@ -4,16 +4,24 @@ import type { NextRequest } from "next/server";
 /**
  * Protección por contraseña del panel completo.
  *
- * Se activa sólo si existen las variables de entorno DASHBOARD_USUARIO y
- * DASHBOARD_PASSWORD. Sin ellas el panel queda abierto, lo que sirve para
- * desarrollo local pero no debería usarse en producción: la página contiene
- * información económica y personal.
+ * En local, si no hay credenciales definidas el panel queda abierto para poder
+ * trabajar cómodamente. En cualquier despliegue de Vercel el comportamiento es
+ * el contrario: sin credenciales se deniega el acceso. La página contiene
+ * información económica y personal, así que nunca debe quedar expuesta por
+ * haber olvidado configurar una variable de entorno.
  */
 export function middleware(request: NextRequest) {
   const usuario = process.env.DASHBOARD_USUARIO;
   const password = process.env.DASHBOARD_PASSWORD;
+  const desplegado = Boolean(process.env.VERCEL);
 
-  if (!usuario || !password) return NextResponse.next();
+  if (!usuario || !password) {
+    if (!desplegado) return NextResponse.next();
+    return new NextResponse(
+      "Este despliegue no tiene configuradas DASHBOARD_USUARIO y DASHBOARD_PASSWORD.",
+      { status: 503 },
+    );
+  }
 
   const cabecera = request.headers.get("authorization");
 

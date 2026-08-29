@@ -104,7 +104,10 @@ entorno en Vercel:
 - `DASHBOARD_USUARIO`
 - `DASHBOARD_PASSWORD`
 
-Si no están definidas, el panel queda **abierto**. No las borres en producción.
+En cualquier despliegue de Vercel, si faltan esas variables el panel responde
+**503 en lugar de abrirse**: nunca puede quedar expuesto por un despiste de
+configuración. En local, sin variables, el panel se sirve abierto para poder
+trabajar con comodidad.
 
 El repositorio de GitHub es privado y no contiene documentos: sólo enlaces a
 Google Drive, que siguen exigiendo permiso sobre la carpeta.
