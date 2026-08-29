@@ -1,4 +1,5 @@
 import { Cabecera } from "@/components/cabecera";
+import { SeccionCertificaciones } from "@/components/certificaciones";
 import {
   FichaProyecto,
   SeccionAlertas,
@@ -27,13 +28,17 @@ import {
 } from "@/lib/calculos";
 import { hojaCostes } from "@/lib/documentos";
 import { euros, fechaCorta, num, pct } from "@/lib/formato";
+import { leerCertificaciones } from "@/lib/certificaciones";
 import { leerHoja } from "@/lib/hoja";
 import { ejecucion, fechasPago, financiacion, hipoteca, pagadores, proyecto } from "@/lib/proyecto";
 
 export const revalidate = 300;
 
 export default async function Panel_() {
-  const hoja = await leerHoja(fechasPago);
+  const [hoja, certificaciones] = await Promise.all([
+    leerHoja(fechasPago),
+    leerCertificaciones(ejecucion.ivaTipo),
+  ]);
   const c = calcularProyecto(hoja);
   const h = calcularHipoteca();
   const cap = calcularCapacidad();
@@ -498,8 +503,13 @@ export default async function Panel_() {
                 <Kpi etiqueta="Coste por m² con IVA" valor={euros(c.obra.costeM2ConIva)} />
                 <Kpi
                   etiqueta="Certificado a fecha"
-                  valor={euros(0)}
-                  nota="La obra aún no ha empezado a facturarse"
+                  valor={euros(certificaciones.base)}
+                  nota={
+                    certificaciones.lineas.length === 0
+                      ? "La obra aún no ha empezado a facturarse"
+                      : `${pct(certificaciones.base / c.obra.base)} de la obra contratada`
+                  }
+                  tono={certificaciones.lineas.length > 0 ? "marca" : "neutro"}
                 />
               </div>
             </div>
@@ -534,6 +544,8 @@ export default async function Panel_() {
             </Panel>
           </div>
         </Seccion>
+
+        <SeccionCertificaciones datos={certificaciones} obraBase={c.obra.base} />
 
         <SeccionCapitulos />
         <SeccionHipoteca />

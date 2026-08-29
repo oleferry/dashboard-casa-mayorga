@@ -12,9 +12,10 @@ concepto, los pagos realizados, la hipoteca y todo el expediente documental.
 
 | Sección | Contenido |
 |---|---|
-| **Resumen económico** | Coste total previsto, pagado a fecha, pendiente, hipoteca, fondos propios que faltan y coste bancario mensual |
+| **Resumen económico** | Coste total previsto, pagado a fecha, pendiente, hipoteca, ahorros que faltan y coste bancario mensual |
 | **Costes por concepto** | Lectura en vivo de la hoja de Google Sheets, agrupada por concepto con comprometido / pagado / pendiente |
 | **Ejecución de obra** | Contrato principal, trabajos aparte, IVA, reserva del 5%, coste por m² y referencias presupuestarias |
+| **Certificaciones** | Registro de obra ejecutada: avance, reparto entre hipoteca y ahorros, y estado de cada certificación |
 | **Capítulos de obra** | Los 15 capítulos del proyecto técnico con su peso y la estimación operativa sobre el contrato |
 | **Hipoteca** | Condiciones de Unicaja, bonificaciones, coste mensual e intereses totales |
 | **Cronología** | Hitos administrativos y económicos |
@@ -57,7 +58,41 @@ Las columnas «Pagado A» y «Pagado B» no distinguen personas —la cuenta es
 común— sino si el pago queda documentado. Sus etiquetas se configuran en
 `pagadores`, dentro de `lib/proyecto.ts`.
 
-### 2. Datos maestros (en el repositorio)
+> **Mejora recomendada:** añadir una columna `Fecha` junto a `Pagado`. En cuanto
+> exista, el panel podrá dibujar la evolución del gasto en el tiempo. De momento
+> sólo se muestran las fechas verificadas contra recibos, listadas en
+> `fechasPago` dentro de `lib/proyecto.ts`.
+
+### 2. Certificaciones de obra (en vivo)
+
+Se leen de una segunda pestaña de la misma hoja, llamada **`Certificaciones`**.
+Mientras no exista, el panel muestra un estado vacío que explica cómo crearla.
+
+Las columnas se localizan **por su nombre**, no por su posición, así que se
+pueden reordenar o añadir otras. Basta con que existan `Fecha` y una de
+`Base imponible` o `Total`:
+
+| Columna | Para qué |
+|---|---|
+| `Nº` | Número correlativo de la certificación |
+| `Fecha` | Admite `15/10/2026` o `2026-10-15` |
+| `Concepto` | Capítulo o periodo certificado |
+| `Base imponible` | Obra ejecutada, sin IVA |
+| `IVA` | Se calcula al 10% si se deja vacía |
+| `Total` | Se calcula si se deja vacía |
+| `Estado` | pendiente · aprobada · facturada · pagada |
+| `Dispuesto` | Lo que libera el banco contra esa certificación |
+| `Ahorros` | Lo que se paga con fondos propios |
+| `Documento` | URL de Drive a la certificación o factura |
+| `Observaciones` | Incidencias y responsables |
+
+> **Cuidado al tocar `lib/certificaciones.ts`:** cuando se pide a gviz una
+> pestaña que no existe, Google devuelve **la primera pestaña con código 200**
+> en lugar de un error. Por eso el lector valida las cabeceras antes de
+> interpretar nada; sin esa comprobación el panel mostraría los costes del solar
+> como si fueran certificaciones de obra. `npm test` cubre justo ese caso.
+
+### 3. Datos maestros (en el repositorio)
 
 Todo lo que no vive en la hoja se edita en archivos TypeScript:
 
@@ -70,8 +105,7 @@ Todo lo que no vive en la hoja se edita en archivos TypeScript:
 Para actualizar el panel basta con editar esos archivos y hacer push: Vercel
 despliega automáticamente.
 
-
-### 3. Modelo de financiación
+### 4. Modelo de financiación
 
 El banco presta un porcentaje del **menor** entre la tasación del edificio
 terminado y el coste total de la promoción (presupuesto de ejecución del
@@ -86,10 +120,6 @@ el IVA, los impuestos, los honorarios técnicos, el suelo y el mobiliario salen
 de ahorros. Los parámetros están en `financiacion`, en `lib/proyecto.ts`, junto
 con los escenarios de disposición que el panel compara.
 
-> **Mejora recomendada:** añadir una columna `Fecha` junto a `Pagado`. En cuanto
-> exista, el panel podrá dibujar la evolución del gasto en el tiempo. De momento
-> sólo se muestran las fechas verificadas contra recibos, listadas en
-> `fechasPago` dentro de `lib/proyecto.ts`.
 ---
 
 ## Actualizar el snapshot de respaldo
@@ -108,6 +138,12 @@ Después conviértelo a `data/snapshot.json` con la forma
 ```bash
 npm install
 npm run dev
+```
+
+Las pruebas del lector de certificaciones:
+
+```bash
+npm test
 ```
 
 El panel queda en http://localhost:3000.

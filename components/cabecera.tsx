@@ -6,6 +6,7 @@ const enlaces = [
   { href: "#resumen", texto: "Resumen" },
   { href: "#costes", texto: "Costes" },
   { href: "#obra", texto: "Obra" },
+  { href: "#certificaciones", texto: "Certificaciones" },
   { href: "#capitulos", texto: "Capítulos" },
   { href: "#hipoteca", texto: "Hipoteca" },
   { href: "#cronologia", texto: "Cronología" },
