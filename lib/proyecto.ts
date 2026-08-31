@@ -17,6 +17,7 @@ export const proyecto = {
   expedienteVisado: "2025-00624",
   fechaVisado: "2025-10-08",
   fechaLicencia: "2026-01-07",
+  inicioObra: "2026-08-31",
   primeraFacturaPrevista: "2026-10-15",
 };
 
@@ -141,8 +142,10 @@ export const hipoteca = {
   disposicionPrevista: 278250,
   disposicionContrato: 265000,
   desviacionPrevista: 0.05,
+  /** Meses de amortización, una vez terminada la carencia. */
   plazoMeses: 360,
-  carencia: false,
+  /** Un año de carencia en el que sólo se pagan intereses de lo dispuesto. */
+  carenciaMeses: 12,
   tinBase: 0.034,
   bonificacionTotal: 0.0085,
   tinFinal: 0.0255,
@@ -152,6 +155,8 @@ export const hipoteca = {
   comisionAmortizacionAnticipada: 0.005,
   tasacion: 424018.8,
   seguroHogarAnual: 450,
+  /** Pendiente de concretar: en cuanto haya cifra, el panel la incorpora. */
+  seguroSaludAnual: 0,
   bonificaciones: [
     {
       vinculacion: "Domiciliación de ingresos y dos tarjetas",
@@ -216,6 +221,7 @@ export const hitos = [
   { fecha: "2026-07-08", titulo: "Resumen de presupuesto actualizado del constructor", estado: "hecho" },
   { fecha: "2026-07-16", titulo: "Tasación en hipótesis de edificio terminado — 424.018,80 €", estado: "hecho" },
   { fecha: "2026-08-28", titulo: "Unicaja seleccionada como entidad financiadora", estado: "hecho" },
+  { fecha: "2026-08-31", titulo: "Inicio de la obra", estado: "hecho" },
   { fecha: "2026-10-15", titulo: "Primera factura de obra prevista", estado: "previsto" },
 ] as { fecha: string; titulo: string; estado: "hecho" | "previsto" }[];
 
@@ -223,9 +229,21 @@ export const hitos = [
 export const alertas = [
   {
     nivel: "alta",
+    titulo: "La obra ha empezado y la hipoteca no está firmada",
+    detalle:
+      "La obra arrancó el 31 de agosto de 2026 y Unicaja todavía no ha firmado. Hasta que se firme y empiecen las disposiciones, cada certificación que llegue hay que pagarla íntegra con ahorros, no sólo su IVA. Conviene cuadrar el calendario de certificaciones con la fecha de firma.",
+  },
+  {
+    nivel: "alta",
     titulo: "Formalización hipotecaria sin cerrar",
     detalle:
       "Unicaja está seleccionada pero no aprobada en firme. Faltan la FEIN, la revisión de condiciones y la firma. Hasta entonces la cuota y el tipo son una previsión.",
+  },
+  {
+    nivel: "media",
+    titulo: "El aparejador figura en la hoja con importe cero",
+    detalle:
+      "La fila «Aparejador — Dirección técnica de obra» está a 0 €, así que su coste no entra en ningún total del panel. Al haber empezado la obra hace falta dirección de ejecución material: conviene pedir el presupuesto y registrarlo para que deje de ser un gasto invisible.",
   },
   {
     nivel: "alta",

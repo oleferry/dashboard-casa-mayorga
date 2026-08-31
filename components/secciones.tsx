@@ -102,8 +102,18 @@ export function SeccionHipoteca() {
                   </span>
                 ),
               },
-              { clave: "Plazo", valor: `${h.anios} años` },
-              { clave: "Carencia", valor: hipoteca.carencia ? "Sí" : "No" },
+              {
+                clave: "Plazo total",
+                nota: `${h.carenciaAnios} año de carencia + ${h.anios} de amortización`,
+                valor: `${h.plazoTotalAnios} años`,
+              },
+              {
+                clave: "Carencia",
+                nota: "Sólo intereses de lo dispuesto",
+                valor: (
+                  <span style={{ color: "var(--marca)" }}>{h.carenciaAnios} año</span>
+                ),
+              },
               { clave: "Tipo fijo sin bonificar", valor: pct(hipoteca.tinBase, 2) },
               { clave: "Bonificación prevista", valor: `−${pct(hipoteca.bonificacionTotal, 2)}` },
               {
@@ -123,10 +133,25 @@ export function SeccionHipoteca() {
           <h3 className="mb-3 text-sm font-semibold">Coste mensual y total</h3>
           <ListaDatos
             datos={[
-              { clave: "Cuota hipotecaria", valor: `${euros(h.cuotaMensual)}/mes` },
+              {
+                clave: "Durante la carencia",
+                nota: "Sólo intereses, con todo dispuesto",
+                valor: `${euros(h.cuotaCarencia)}/mes`,
+              },
+              {
+                clave: "Cuota tras la carencia",
+                valor: `${euros(h.cuotaMensual)}/mes`,
+              },
               { clave: "Seguro de hogar prorrateado", valor: `${euros(h.seguroMensual)}/mes` },
               {
+                clave: "Seguro de salud prorrateado",
+                nota: hipoteca.seguroSaludAnual > 0 ? undefined : "Pendiente de concretar",
+                valor:
+                  hipoteca.seguroSaludAnual > 0 ? `${euros(h.seguroSaludMensual)}/mes` : "—",
+              },
+              {
                 clave: "Coste bancario recurrente",
+                nota: "Cuota más seguros, tras la carencia",
                 valor: (
                   <span style={{ color: "var(--marca)" }}>{euros(h.costeMensual)}/mes</span>
                 ),
@@ -146,14 +171,20 @@ export function SeccionHipoteca() {
                 valor: `${euros(h.cuotaSinBonificar - h.cuotaMensual)}/mes`,
               },
               { clave: "Total devuelto en 30 años", valor: euros(h.totalDevuelto) },
-              { clave: "Intereses totales", valor: euros(h.totalIntereses) },
+              { clave: "Intereses de la amortización", valor: euros(h.totalIntereses) },
+              {
+                clave: "Intereses del año de carencia",
+                nota: "Estimado: el capital se dispone a plazos",
+                valor: euros(h.interesesCarenciaEstimados),
+              },
               { clave: "Tasación terminada", valor: euros(hipoteca.tasacion) },
             ]}
           />
           <p className="tenue mt-4 border-t pt-3 text-xs leading-relaxed">
-            La cuota corresponde al préstamo totalmente dispuesto. Durante la obra hay que
-            registrar el capital entregado en cada certificación y lo que el banco cobre
-            realmente.
+            Durante el año de carencia sólo se pagan intereses del capital dispuesto, así que la
+            cifra de carencia es el techo de esa fase: al principio de la obra será mucho menor,
+            porque el capital se libera contra certificaciones. Hay que registrar en cada una lo
+            que entrega el banco y lo que cobra realmente.
           </p>
         </Panel>
 
@@ -372,6 +403,12 @@ export function FichaProyecto() {
             valor: `${proyecto.expedienteVisado} · ${fechaCorta(proyecto.fechaVisado)}`,
           },
           { clave: "Licencia de obra", valor: fecha(proyecto.fechaLicencia) },
+          {
+            clave: "Inicio de obra",
+            valor: (
+              <span style={{ color: "var(--marca)" }}>{fecha(proyecto.inicioObra)}</span>
+            ),
+          },
           { clave: "Constructor", valor: proyecto.constructor },
           { clave: "Arquitecto", valor: proyecto.arquitecto },
           {

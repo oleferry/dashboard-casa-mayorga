@@ -83,11 +83,15 @@ export function calcularProyecto(hoja: DatosHoja) {
       concepto: g.nombre,
       importe: g.total,
       pagado: g.pagado,
+      // Con pocas líneas se nombran, para que un grupo como «Hipoteca
+      // autopromotor» no esconda que en realidad es la tasación.
+      detalle: g.lineas.length <= 3 ? g.lineas.map((l) => l.concepto).join(" · ") : undefined,
     })),
     {
       concepto: `IVA de la ejecución (${(ejecucion.ivaTipo * 100).toFixed(0)}%)`,
       importe: Math.max(0, obra.iva - excedenteHipoteca),
       pagado: 0,
+      detalle: "El banco financia obra, no impuestos",
     },
     ...(obraSinCubrir > 0
       ? [
@@ -95,6 +99,7 @@ export function calcularProyecto(hoja: DatosHoja) {
             concepto: "Obra por encima de la disposición prevista",
             importe: obraSinCubrir,
             pagado: 0,
+            detalle: undefined,
           },
         ]
       : []),
@@ -129,6 +134,7 @@ export function calcularProyecto(hoja: DatosHoja) {
       ahorros: Math.max(0, totalProyecto - e.disposicion),
       ahorrosRestantes: Math.max(0, totalProyecto - e.disposicion - pagado),
       esActual: e.disposicion === hipotecaImporte,
+      mensual: costeMensualPara(e.disposicion),
     })),
   };
 }
@@ -156,6 +162,26 @@ export function calcularCapitulos() {
   };
 }
 
+/** Durante la carencia sólo se pagan intereses del capital dispuesto. */
+export function cuotaSoloIntereses(capital: number, tinAnual: number) {
+  return (capital * tinAnual) / 12;
+}
+
+/** Coste mensual del banco para una disposición dada, en sus dos fases. */
+export function costeMensualPara(disposicion: number) {
+  const seguros = (hipoteca.seguroHogarAnual + hipoteca.seguroSaludAnual) / 12;
+  const carencia = cuotaSoloIntereses(disposicion, hipoteca.tinFinal);
+  const amortizacion = cuotaFrancesa(disposicion, hipoteca.tinFinal, hipoteca.plazoMeses);
+
+  return {
+    seguros,
+    cuotaCarencia: carencia,
+    cuotaAmortizacion: amortizacion,
+    totalCarencia: carencia + seguros,
+    totalAmortizacion: amortizacion + seguros,
+  };
+}
+
 export function calcularHipoteca() {
   const cuotaMensual = cuotaFrancesa(
     hipoteca.disposicionPrevista,
@@ -163,13 +189,29 @@ export function calcularHipoteca() {
     hipoteca.plazoMeses,
   );
   const seguroMensual = hipoteca.seguroHogarAnual / 12;
-  const costeMensual = cuotaMensual + seguroMensual;
+  const seguroSaludMensual = hipoteca.seguroSaludAnual / 12;
+  const seguros = seguroMensual + seguroSaludMensual;
+  const costeMensual = cuotaMensual + seguros;
+
+  const cuotaCarencia = cuotaSoloIntereses(hipoteca.disposicionPrevista, hipoteca.tinFinal);
+  // Durante la obra el capital se dispone a plazos, así que el interés medio
+  // del año de carencia se estima sobre la mitad de lo que se acabe disponiendo.
+  const interesesCarenciaEstimados =
+    (hipoteca.disposicionPrevista / 2) * hipoteca.tinFinal * (hipoteca.carenciaMeses / 12);
+
   const totalIntereses = cuotaMensual * hipoteca.plazoMeses - hipoteca.disposicionPrevista;
 
   return {
     cuotaMensual,
     seguroMensual,
+    seguroSaludMensual,
+    seguros,
     costeMensual,
+    cuotaCarencia,
+    costeMensualCarencia: cuotaCarencia + seguros,
+    interesesCarenciaEstimados,
+    carenciaAnios: hipoteca.carenciaMeses / 12,
+    plazoTotalAnios: (hipoteca.carenciaMeses + hipoteca.plazoMeses) / 12,
     totalIntereses,
     totalDevuelto: cuotaMensual * hipoteca.plazoMeses,
     anios: hipoteca.plazoMeses / 12,

@@ -103,7 +103,7 @@ export default async function Panel_() {
             <Kpi
               etiqueta="Coste bancario mensual"
               valor={`${euros(h.costeMensual)}/mes`}
-              nota={`Cuota ${euros(h.cuotaMensual)} + seguro de hogar ${euros(h.seguroMensual)}`}
+              nota={`Tras la carencia · durante el primer año, hasta ${euros(h.costeMensualCarencia)}/mes de sólo intereses`}
             />
           </div>
 
@@ -141,12 +141,16 @@ export default async function Panel_() {
                   datos={[
                     ...c.desgloseAhorros.map((d) => ({
                       clave: d.concepto,
-                      nota:
+                      nota: [
+                        d.detalle,
                         d.pagado >= d.importe
                           ? "pagado"
                           : d.pagado > 0
                             ? `${euros(d.pagado)} pagado`
                             : "pendiente",
+                      ]
+                        .filter(Boolean)
+                        .join(" · "),
                       valor: (
                         <span
                           style={{
@@ -183,7 +187,7 @@ export default async function Panel_() {
             <FichaProyecto />
           </div>
 
-          <div className="mt-4 grid gap-4 lg:grid-cols-2">
+          <div className="mt-4 grid gap-4 lg:grid-cols-3">
             <Panel>
               <h3 className="mb-1 text-sm font-semibold">Cuánto puede prestar el banco</h3>
               <p className="suave mb-3 text-xs leading-relaxed">
@@ -223,20 +227,21 @@ export default async function Panel_() {
               />
             </Panel>
 
-            <Panel>
+            <Panel className="lg:col-span-2">
               <h3 className="mb-1 text-sm font-semibold">Ahorros según lo que se disponga</h3>
               <p className="suave mb-3 text-xs leading-relaxed">
-                Cuanto más se disponga de la hipoteca, menos ahorros hacen falta. El límite lo pone
-                lo que el banco acepte certificar.
+                Cuanto más se disponga de la hipoteca, menos ahorros hacen falta y mayor es la
+                cuota. El límite lo pone lo que el banco acepte certificar.
               </p>
               <div className="overflow-x-auto">
-                <table className="w-full min-w-[24rem] border-collapse text-sm">
+                <table className="w-full min-w-[38rem] border-collapse text-sm">
                   <thead>
                     <tr>
                       <Th>Escenario</Th>
                       <Th numero ancho="7rem">Disposición</Th>
                       <Th numero ancho="7rem">Ahorros</Th>
                       <Th numero ancho="7rem">Faltarían</Th>
+                      <Th numero ancho="9rem">Coste mensual</Th>
                     </tr>
                   </thead>
                   <tbody>
@@ -261,18 +266,43 @@ export default async function Panel_() {
                             {euros(e.ahorrosRestantes)}
                           </span>
                         </Td>
+                        <Td numero>
+                          <span className="font-medium">{euros(e.mensual.totalAmortizacion)}</span>
+                          <span className="suave block text-xs">
+                            {euros(e.mensual.totalCarencia)} en carencia
+                          </span>
+                        </Td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
               </div>
-              <p className="tenue mt-3 border-t pt-3 text-xs leading-relaxed">
-                «Faltarían» descuenta los {euros(c.pagado)} ya aportados. Cada 1.000 € más de
-                disposición son 1.000 € menos de bolsillo, a cambio de{" "}
-                {euros(cuotaFrancesa(1000, hipoteca.tinFinal, hipoteca.plazoMeses))}/mes más de
-                cuota. Llegar al máximo de {euros(cap.ofrecido)} liberaría{" "}
-                <strong>{euros(cap.margenSinUsar)}</strong> más.
-              </p>
+
+              <div className="tenue mt-3 space-y-2 border-t pt-3 text-xs leading-relaxed">
+                <p>
+                  <strong>Cómo sale «Faltarían»:</strong> coste total del proyecto{" "}
+                  {euros(c.totalProyecto)} − disposición − {euros(c.pagado)} ya aportados. Para la
+                  disposición actual: {euros(c.totalProyecto)} − {euros(c.hipotecaImporte)} −{" "}
+                  {euros(c.pagado)} = <strong>{euros(c.ahorrosRestantes)}</strong>. El IVA no se
+                  resta: va dentro del coste total y es justamente lo que hay que pagar de bolsillo.
+                </p>
+                <p>
+                  <strong>Coste mensual:</strong> cuota más seguro de hogar (
+                  {euros(hipoteca.seguroHogarAnual / 12)}/mes)
+                  {hipoteca.seguroSaludAnual > 0
+                    ? ` y seguro de salud (${euros(hipoteca.seguroSaludAnual / 12)}/mes)`
+                    : "; el seguro de salud todavía no está incluido, falta la cifra"}
+                  . Durante el año de carencia sólo se pagan intereses de lo dispuesto, así que la
+                  cifra pequeña es el techo de esa fase: al principio será mucho menor, porque el
+                  capital se dispone a plazos.
+                </p>
+                <p>
+                  Cada 1.000 € más de disposición son 1.000 € menos de bolsillo, a cambio de{" "}
+                  {euros(cuotaFrancesa(1000, hipoteca.tinFinal, hipoteca.plazoMeses))}/mes más de
+                  cuota. Llegar al máximo de {euros(cap.ofrecido)} liberaría{" "}
+                  <strong>{euros(cap.margenSinUsar)}</strong> más.
+                </p>
+              </div>
             </Panel>
           </div>
         </Seccion>
@@ -506,7 +536,7 @@ export default async function Panel_() {
                   valor={euros(certificaciones.base)}
                   nota={
                     certificaciones.lineas.length === 0
-                      ? "La obra aún no ha empezado a facturarse"
+                      ? `Obra iniciada el ${fechaCorta(proyecto.inicioObra)}, aún sin certificar`
                       : `${pct(certificaciones.base / c.obra.base)} de la obra contratada`
                   }
                   tono={certificaciones.lineas.length > 0 ? "marca" : "neutro"}

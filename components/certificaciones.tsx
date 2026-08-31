@@ -75,7 +75,7 @@ export function SeccionCertificaciones({
             <Kpi
               etiqueta="Certificado a fecha"
               valor={euros(datos.base)}
-              nota={`${pct(avance)} de los ${euros(obraBase)} de obra contratada`}
+              nota={`${pct(avance)} de los ${euros(obraBase)} de obra contratada · obra iniciada el ${fechaCorta(proyecto.inicioObra)}`}
               destacado
             />
             <Kpi
@@ -231,8 +231,8 @@ function SinCertificaciones({ datos }: { datos: DatosCertificaciones }) {
             {lista ? "La hoja está lista, aún sin certificaciones" : "Todavía no hay certificaciones"}
           </h3>
           <p className="tenue mt-1 text-sm leading-relaxed">
-            La primera factura de obra está prevista para el{" "}
-            {fecha(proyecto.primeraFacturaPrevista)}.
+            La obra arrancó el {fecha(proyecto.inicioObra)} y la primera factura está prevista para
+            el {fecha(proyecto.primeraFacturaPrevista)}.
           </p>
         </div>
         <Etiqueta tono={lista ? "marca" : "neutro"}>
