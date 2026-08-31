@@ -120,13 +120,16 @@ el IVA, los impuestos, los honorarios técnicos, el suelo y el mobiliario salen
 de ahorros. Los parámetros están en `financiacion`, en `lib/proyecto.ts`, junto
 con los escenarios de disposición que el panel compara.
 
-El préstamo tiene **un año de carencia** en el que sólo se pagan intereses del
-capital dispuesto, y después 30 años de amortización — 31 en total. Por eso el
+El préstamo son **30 años en total**: uno de carencia en el que sólo se pagan
+intereses del capital dispuesto y 29 de amortización (`plazoMeses` son los 348
+meses que se amortizan, no el plazo total). Por eso el
 panel da dos cuotas para cada escenario: la de carencia (`cuotaSoloIntereses`,
 que es el techo de esa fase porque el capital se libera a plazos) y la de
 amortización (`cuotaFrancesa`). La cuota ya no está escrita a mano: se calcula
-desde la disposición, y `hipoteca.cuotaReferencia` sólo guarda la que ofreció el
-banco para 265.000 € como comprobación.
+desde la disposición, y `hipoteca.cuotaReferencia` guarda la que ofreció el banco
+para 265.000 € como contraste: sus 1.053,97 €/mes corresponden a 360
+mensualidades, no a 348, así que el panel avisa de que hay que aclarar de qué
+plazo hablaba la oferta.
 
 El seguro de salud (`hipoteca.seguroSaludAnual`) está a 0: en cuanto haya cifra,
 entra automáticamente en todos los costes mensuales.

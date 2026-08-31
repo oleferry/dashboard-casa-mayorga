@@ -215,6 +215,17 @@ export function calcularHipoteca() {
     totalIntereses,
     totalDevuelto: cuotaMensual * hipoteca.plazoMeses,
     anios: hipoteca.plazoMeses / 12,
+    /**
+     * La cuota que ofreció el banco frente a la que sale del plazo que
+     * manejamos. Si no coinciden, es que no hablan del mismo número de
+     * mensualidades y hay que aclararlo antes de firmar.
+     */
+    cuotaOfertadaBanco: hipoteca.cuotaReferencia,
+    cuotaOfertadaRecalculada: cuotaFrancesa(
+      hipoteca.cuotaReferencia.capital,
+      hipoteca.tinFinal,
+      hipoteca.plazoMeses,
+    ),
     /** Cuota si se dispusiera sólo el contrato, sin el margen de desviación. */
     cuotaSoloContrato: cuotaFrancesa(
       hipoteca.disposicionContrato,

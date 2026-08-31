@@ -142,9 +142,11 @@ export const hipoteca = {
   disposicionPrevista: 278250,
   disposicionContrato: 265000,
   desviacionPrevista: 0.05,
-  /** Meses de amortización, una vez terminada la carencia. */
-  plazoMeses: 360,
-  /** Un año de carencia en el que sólo se pagan intereses de lo dispuesto. */
+  /**
+   * 30 años en total: un año de carencia en el que sólo se pagan intereses de
+   * lo dispuesto, y 29 de amortización. El plazo son los meses que se amortizan.
+   */
+  plazoMeses: 348,
   carenciaMeses: 12,
   tinBase: 0.034,
   bonificacionTotal: 0.0085,
@@ -241,9 +243,15 @@ export const alertas = [
   },
   {
     nivel: "media",
-    titulo: "El aparejador figura en la hoja con importe cero",
+    titulo: "Los honorarios del aparejador están anotados bajo el arquitecto",
     detalle:
-      "La fila «Aparejador — Dirección técnica de obra» está a 0 €, así que su coste no entra en ningún total del panel. Al haber empezado la obra hace falta dirección de ejecución material: conviene pedir el presupuesto y registrarlo para que deje de ser un gasto invisible.",
+      "Los 2.625 € que quedan pendientes en el capítulo de proyecto son del aparejador, pero en la hoja figuran en la fila «Arquitecto — Dirección de obra», mientras que la fila propia del aparejador está a 0 €. Conviene moverlos para que el concepto se lea solo. Están comprometidos pero no pagados, y todavía no hay nota de pago.",
+  },
+  {
+    nivel: "media",
+    titulo: "La cuota que ofreció Unicaja no cuadra con 30 años totales",
+    detalle:
+      "Los 1.053,97 €/mes que ofreció el banco para 265.000 € corresponden exactamente a 360 mensualidades de amortización. Si el plazo son 30 años en total con uno de carencia, se amortiza en 348 y esa misma disposición saldría a 1.078,22 €/mes. Hay que confirmar con Unicaja si su cuota incluía la carencia o si el plazo total son 31 años.",
   },
   {
     nivel: "alta",

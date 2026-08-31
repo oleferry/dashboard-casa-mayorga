@@ -170,7 +170,11 @@ export function SeccionHipoteca() {
                 clave: "Ahorro por bonificaciones",
                 valor: `${euros(h.cuotaSinBonificar - h.cuotaMensual)}/mes`,
               },
-              { clave: "Total devuelto en 30 años", valor: euros(h.totalDevuelto) },
+              {
+                clave: `Total devuelto en ${h.anios} años`,
+                nota: "Sin contar los intereses de la carencia",
+                valor: euros(h.totalDevuelto),
+              },
               { clave: "Intereses de la amortización", valor: euros(h.totalIntereses) },
               {
                 clave: "Intereses del año de carencia",
@@ -185,6 +189,13 @@ export function SeccionHipoteca() {
             cifra de carencia es el techo de esa fase: al principio de la obra será mucho menor,
             porque el capital se libera contra certificaciones. Hay que registrar en cada una lo
             que entrega el banco y lo que cobra realmente.
+          </p>
+          <p className="mt-3 text-xs leading-relaxed" style={{ color: "var(--aviso)" }}>
+            Unicaja ofreció {euros(h.cuotaOfertadaBanco.cuota)}/mes para{" "}
+            {euros(h.cuotaOfertadaBanco.capital)}, que son exactamente 360 mensualidades. Con{" "}
+            {h.plazoTotalAnios} años totales se amortiza en {hipoteca.plazoMeses} y esa misma
+            disposición saldría a {euros(h.cuotaOfertadaRecalculada)}/mes. Conviene aclarar con el
+            banco de qué plazo hablaba su oferta.
           </p>
         </Panel>
 
