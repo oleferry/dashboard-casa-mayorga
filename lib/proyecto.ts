@@ -157,8 +157,7 @@ export const hipoteca = {
   comisionAmortizacionAnticipada: 0.005,
   tasacion: 424018.8,
   seguroHogarAnual: 450,
-  /** Pendiente de concretar: en cuanto haya cifra, el panel la incorpora. */
-  seguroSaludAnual: 0,
+  seguroSaludAnual: 350,
   bonificaciones: [
     {
       vinculacion: "Domiciliación de ingresos y dos tarjetas",
@@ -243,9 +242,15 @@ export const alertas = [
   },
   {
     nivel: "media",
-    titulo: "Los honorarios del aparejador están anotados bajo el arquitecto",
+    titulo: "Honorarios del aparejador comprometidos y sin nota de pago",
     detalle:
-      "Los 2.625 € que quedan pendientes en el capítulo de proyecto son del aparejador, pero en la hoja figuran en la fila «Arquitecto — Dirección de obra», mientras que la fila propia del aparejador está a 0 €. Conviene moverlos para que el concepto se lea solo. Están comprometidos pero no pagados, y todavía no hay nota de pago.",
+      "Los 2.625 € de la dirección de ejecución material están comprometidos pero no pagados, y todavía no hay factura ni justificante. Con la obra ya iniciada conviene cerrar cuándo y cómo se abona.",
+  },
+  {
+    nivel: "baja",
+    titulo: "El IVA del aparejador se calcula sobre una base distinta a la que suma",
+    detalle:
+      "En la hoja, el impuesto de esa fila sale del 21% de 2.500 € (525 €) pero la base que se suma para el total son 2.100 €, de donde salen los 2.625 €. O la base son 2.500 € y el total serían 3.025 €, o el impuesto va sobre 2.100 € y serían 2.541 €. Conviene contrastarlo con el presupuesto del aparejador.",
   },
   {
     nivel: "media",

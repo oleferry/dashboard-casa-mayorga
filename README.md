@@ -131,8 +131,8 @@ para 265.000 € como contraste: sus 1.053,97 €/mes corresponden a 360
 mensualidades, no a 348, así que el panel avisa de que hay que aclarar de qué
 plazo hablaba la oferta.
 
-El seguro de salud (`hipoteca.seguroSaludAnual`) está a 0: en cuanto haya cifra,
-entra automáticamente en todos los costes mensuales.
+Los seguros van en `hipoteca.seguroHogarAnual` (450 €) y
+`hipoteca.seguroSaludAnual` (350 €), y entran en todos los costes mensuales.
 
 ---
 
