@@ -223,6 +223,16 @@ export const hitos = [
   { fecha: "2026-07-16", titulo: "Tasación en hipótesis de edificio terminado — 424.018,80 €", estado: "hecho" },
   { fecha: "2026-08-28", titulo: "Unicaja seleccionada como entidad financiadora", estado: "hecho" },
   { fecha: "2026-08-31", titulo: "Inicio de la obra", estado: "hecho" },
+  {
+    fecha: "2026-09-02",
+    titulo: "Propuesta de I-DE para el suministro provisional de obra — 164,58 €",
+    estado: "hecho",
+  },
+  {
+    fecha: "2026-09-17",
+    titulo: "Fecha límite para aceptar la propuesta de I-DE",
+    estado: "previsto",
+  },
   { fecha: "2026-10-15", titulo: "Primera factura de obra prevista", estado: "previsto" },
 ] as { fecha: string; titulo: string; estado: "hecho" | "previsto" }[];
 
@@ -239,6 +249,18 @@ export const alertas = [
     titulo: "Formalización hipotecaria sin cerrar",
     detalle:
       "Unicaja está seleccionada pero no aprobada en firme. Faltan la FEIN, la revisión de condiciones y la firma. Hasta entonces la cuota y el tipo son una previsión.",
+  },
+  {
+    nivel: "alta",
+    titulo: "La propuesta de I-DE caduca el 17 de septiembre",
+    detalle:
+      "I-DE da 15 días desde el 2 de septiembre para aceptar y firmar la propuesta del suministro provisional de obra. El presupuesto de 164,58 € tiene además una validez de 3 meses, hasta el 2 de diciembre de 2026: pasado ese plazo puede revisarse el precio. Sin acometida provisional la obra se queda sin luz.",
+  },
+  {
+    nivel: "media",
+    titulo: "La acometida definitiva de la vivienda no está presupuestada",
+    detalle:
+      "Los 164,58 € de I-DE son sólo el suministro provisional de obra. El alta definitiva de la vivienda —derechos de enganche de luz y el alta de agua— sigue a 0 € en la hoja y llegará al final de obra. Conviene pedir presupuesto para que no aparezca por sorpresa.",
   },
   {
     nivel: "media",

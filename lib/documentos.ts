@@ -284,6 +284,22 @@ export const gruposDocumentales: GrupoDocumental[] = [
     ],
   },
   {
+    id: "suministros",
+    titulo: "Suministros y acometidas",
+    descripcion:
+      "Altas de luz y agua. La acometida provisional de obra ya tiene propuesta; la definitiva de la vivienda está sin pedir.",
+    documentos: [
+      {
+        titulo: "Propuesta previa de nuevos suministros — I-DE (Iberdrola)",
+        descripcion:
+          "Suministro provisional de obra, 5,75 kW. Refuerzo 107,70 € + entronque 28,32 € = 164,58 € con IVA. Referencia 9047509190, CUPS ES0021000044696052SB.",
+        fecha: "2026-09-02",
+        url: carpeta("1atssVlrNnQMad_GR41I275MLtiMGeS7D"),
+        clave: true,
+      },
+    ],
+  },
+  {
     id: "extras",
     titulo: "Estudios complementarios",
     descripcion: "Partidas fuera del contrato principal, todavía sin decidir.",
