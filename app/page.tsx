@@ -71,9 +71,9 @@ export default async function Panel_() {
         >
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             <Kpi
-              etiqueta="Coste total previsto"
+              etiqueta="Coste total de la casa"
               valor={euros(c.totalProyecto)}
-              nota={`${euros(c.costeM2Proyecto)}/m² · ${euros(c.totalConReserva)} con reserva del 5%`}
+              nota={`Obra con IVA, suelo, impuestos, honorarios y gastos · ${euros(c.costeM2Proyecto)}/m²`}
               destacado
             />
             <Kpi

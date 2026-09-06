@@ -204,6 +204,7 @@ export const hipoteca = {
 export const fechasPago: Record<string, string> = {
   "Impuestos: ICIO": "2025-12-19",
   "Tasación inicial": "2026-07-16",
+  "Instalaciones auxiliares para obra": "2026-09-03",
 };
 
 /** Hitos del proyecto, en orden cronológico. */
@@ -229,9 +230,9 @@ export const hitos = [
     estado: "hecho",
   },
   {
-    fecha: "2026-09-17",
-    titulo: "Fecha límite para aceptar la propuesta de I-DE",
-    estado: "previsto",
+    fecha: "2026-09-03",
+    titulo: "Pago de la acometida provisional de obra a I-DE — 164,58 €",
+    estado: "hecho",
   },
   { fecha: "2026-10-15", titulo: "Primera factura de obra prevista", estado: "previsto" },
 ] as { fecha: string; titulo: string; estado: "hecho" | "previsto" }[];
@@ -251,10 +252,10 @@ export const alertas = [
       "Unicaja está seleccionada pero no aprobada en firme. Faltan la FEIN, la revisión de condiciones y la firma. Hasta entonces la cuota y el tipo son una previsión.",
   },
   {
-    nivel: "alta",
-    titulo: "La propuesta de I-DE caduca el 17 de septiembre",
+    nivel: "media",
+    titulo: "Falta subir el justificante del pago a I-DE",
     detalle:
-      "I-DE da 15 días desde el 2 de septiembre para aceptar y firmar la propuesta del suministro provisional de obra. El presupuesto de 164,58 € tiene además una validez de 3 meses, hasta el 2 de diciembre de 2026: pasado ese plazo puede revisarse el precio. Sin acometida provisional la obra se queda sin luz.",
+      "Los 164,58 € de la acometida provisional se pagaron el 3 de septiembre de 2026, pero I-DE exige remitir copia del justificante a través del área privada del representante que gestiona el expediente. Hasta que no conste, el expediente 9047509190 no avanza.",
   },
   {
     nivel: "media",
