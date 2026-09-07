@@ -290,6 +290,14 @@ export const gruposDocumentales: GrupoDocumental[] = [
       "Altas de luz y agua. La acometida provisional de obra ya tiene propuesta; la definitiva de la vivienda está sin pedir.",
     documentos: [
       {
+        titulo: "Certificado de instalación eléctrica de obra",
+        descripcion:
+          "Boletín inscrito en el Servicio Territorial de Industria de Valladolid, registro 47/BT/188819. Instalación temporal para maquinaria de obra, grupo D1: 9.200 W admisibles, 230 V monofásica. Vigencia: la duración de la obra. Instalador Francisco Javier Cela Maniega, nº 47-I-BTE1-5416.",
+        fecha: "2026-09-06",
+        url: archivo("1BFX8o954pRldaXqM3zCSwAxG4smbm2uI"),
+        clave: true,
+      },
+      {
         titulo: "Propuesta previa de nuevos suministros — I-DE (Iberdrola)",
         descripcion:
           "Suministro provisional de obra, 5,75 kW. Refuerzo 107,70 € + entronque 28,32 € = 164,58 € con IVA. Referencia 9047509190, CUPS ES0021000044696052SB.",

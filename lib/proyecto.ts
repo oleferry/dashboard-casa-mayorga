@@ -234,6 +234,11 @@ export const hitos = [
     titulo: "Pago de la acometida provisional de obra a I-DE — 164,58 €",
     estado: "hecho",
   },
+  {
+    fecha: "2026-09-06",
+    titulo: "Certificado de instalación eléctrica de obra inscrito — 47/BT/188819",
+    estado: "hecho",
+  },
   { fecha: "2026-10-15", titulo: "Primera factura de obra prevista", estado: "previsto" },
 ] as { fecha: string; titulo: string; estado: "hecho" | "previsto" }[];
 
@@ -261,7 +266,7 @@ export const alertas = [
     nivel: "media",
     titulo: "La acometida definitiva de la vivienda no está presupuestada",
     detalle:
-      "Los 164,58 € de I-DE son sólo el suministro provisional de obra. El alta definitiva de la vivienda —derechos de enganche de luz y el alta de agua— sigue a 0 € en la hoja y llegará al final de obra. Conviene pedir presupuesto para que no aparezca por sorpresa.",
+      "Los 164,58 € de I-DE y el boletín 47/BT/188819 cubren sólo el suministro provisional de obra, que caduca cuando termine la obra. El alta definitiva de la vivienda —derechos de enganche de luz, su propio boletín eléctrico y el alta de agua— sigue a 0 € en la hoja. Conviene pedir presupuesto para que no aparezca por sorpresa al final.",
   },
   {
     nivel: "media",
