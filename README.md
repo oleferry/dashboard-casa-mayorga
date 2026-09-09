@@ -20,6 +20,7 @@ concepto, los pagos realizados, la hipoteca y todo el expediente documental.
 | **Hipoteca** | Condiciones de Unicaja, bonificaciones, coste mensual e intereses totales |
 | **Cronología** | Hitos administrativos y económicos |
 | **Documentación** | Enlaces a Google Drive agrupados por tipo |
+| **Seguros y obligaciones** | Qué exigen la LOE y el RD 1627/1997 en autopromoción, qué le toca al constructor y qué decisiones siguen abiertas |
 | **Alertas** | Decisiones abiertas y riesgos por nivel |
 
 ---
@@ -97,7 +98,7 @@ pueden reordenar o añadir otras. Basta con que existan `Fecha` y una de
 Todo lo que no vive en la hoja se edita en archivos TypeScript:
 
 - **`lib/proyecto.ts`** — ficha del proyecto, contrato de obra, capítulos,
-  condiciones de la hipoteca, hitos y alertas.
+  condiciones de la hipoteca, hitos, alertas y obligaciones legales.
 - **`lib/documentos.ts`** — enlaces a Google Drive, agrupados por tipo.
 - **`lib/calculos.ts`** — todos los cálculos derivados. No hay ninguna cifra
   calculada a mano en la interfaz.

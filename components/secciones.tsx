@@ -10,7 +10,7 @@ import {
 } from "./ui";
 import { euros, fecha, fechaCorta, num, pct } from "@/lib/formato";
 import { calcularCapitulos, calcularHipoteca } from "@/lib/calculos";
-import { alertas, financiacion, hipoteca, hitos, proyecto } from "@/lib/proyecto";
+import { alertas, financiacion, hipoteca, hitos, obligaciones, proyecto } from "@/lib/proyecto";
 import { gruposDocumentales } from "@/lib/documentos";
 
 /* ------------------------------------------------------- Capítulos de obra */
@@ -342,7 +342,92 @@ export function SeccionDocumentos() {
   );
 }
 
+/* ------------------------------------------- Seguros y obligaciones legales */
+
+const TONO_CARACTER = {
+  obligatorio: "critico",
+  verificar: "aviso",
+  contractual: "aviso",
+  opcional: "neutro",
+  exento: "marca",
+} as const;
+
+const TEXTO_CARACTER = {
+  obligatorio: "obligatorio",
+  verificar: "hay que verificar",
+  contractual: "contractual",
+  opcional: "opcional",
+  exento: "exento por ley",
+} as const;
+
+export function SeccionObligaciones() {
+  const orden = { alta: 0, media: 1, baja: 2 } as const;
+  const lista = [...obligaciones].sort((a, b) => orden[a.urgencia] - orden[b.urgencia]);
+
+  return (
+    <Seccion
+      id="obligaciones"
+      titulo="Seguros y obligaciones legales"
+      descripcion="Qué es obligatorio, qué le toca al constructor y qué conviene aunque no lo sea. Resumen orientativo de la LOE y el RD 1627/1997 para una autopromoción de vivienda unifamiliar de uso propio."
+    >
+      <div className="grid gap-3 md:grid-cols-2">
+        {lista.map((o) => (
+          <div
+            key={o.concepto}
+            className="panel flex flex-col gap-2.5 p-4"
+            style={{
+              borderLeftWidth: 3,
+              borderLeftColor:
+                o.urgencia === "alta"
+                  ? "var(--critico)"
+                  : o.urgencia === "media"
+                    ? "var(--aviso)"
+                    : "var(--borde)",
+            }}
+          >
+            <div className="flex items-start justify-between gap-3">
+              <h3 className="text-sm leading-snug font-semibold">{o.concepto}</h3>
+              <Etiqueta tono={TONO_CARACTER[o.caracter]}>{TEXTO_CARACTER[o.caracter]}</Etiqueta>
+            </div>
+
+            <p className="text-xs leading-relaxed" style={{ color: "var(--aviso)" }}>
+              {o.plazo}
+            </p>
+
+            <p className="tenue text-xs leading-relaxed">{o.detalle}</p>
+
+            <dl className="mt-auto space-y-1 border-t pt-2.5">
+              <div className="flex justify-between gap-3">
+                <dt className="suave text-xs">A quién le toca</dt>
+                <dd className="text-xs">{o.quien}</dd>
+              </div>
+              {o.coste && (
+                <div className="flex justify-between gap-3">
+                  <dt className="suave text-xs">Coste</dt>
+                  <dd className="cifra text-right text-xs">{o.coste}</dd>
+                </div>
+              )}
+              <div className="flex justify-between gap-3">
+                <dt className="suave text-xs">Base</dt>
+                <dd className="suave text-right text-xs">{o.base}</dd>
+              </div>
+            </dl>
+          </div>
+        ))}
+      </div>
+
+      <p className="suave mt-4 text-xs leading-relaxed">
+        Esto es un resumen para no perder de vista las decisiones abiertas, no asesoramiento legal.
+        Conviene contrastarlo con la dirección facultativa —el aparejador es quien lleva la
+        coordinación de seguridad y salud en obra— y con un corredor de seguros antes de contratar
+        o descartar nada.
+      </p>
+    </Seccion>
+  );
+}
+
 /* ----------------------------------------------------------------- Alertas */
+
 
 export function SeccionAlertas() {
   const orden = { alta: 0, media: 1, baja: 2 } as const;

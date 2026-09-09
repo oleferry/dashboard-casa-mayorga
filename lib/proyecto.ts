@@ -242,6 +242,79 @@ export const hitos = [
   { fecha: "2026-10-15", titulo: "Primera factura de obra prevista", estado: "previsto" },
 ] as { fecha: string; titulo: string; estado: "hecho" | "previsto" }[];
 
+/**
+ * Seguros y obligaciones legales de la obra. Resumen orientativo de la LOE
+ * (Ley 38/1999) y el RD 1627/1997 aplicado a una autopromoción de vivienda
+ * unifamiliar para uso propio. No sustituye al criterio de la dirección
+ * facultativa ni al de un corredor de seguros.
+ */
+export const obligaciones = [
+  {
+    concepto: "Coordinador de seguridad y salud en ejecución",
+    quien: "Promotor",
+    caracter: "obligatorio" as const,
+    urgencia: "alta" as const,
+    plazo: "Antes del inicio de obra — la obra arrancó el 31/08",
+    base: "RD 1627/1997, art. 3.2",
+    coste: "Fila «Coordinador seguridad», a 0 € en la hoja",
+    detalle:
+      "Obligatorio en cuanto intervienen más de una empresa, o una empresa y trabajadores autónomos. Los 15.000 € facturados aparte apuntan a un segundo interviniente en obra, así que difícilmente se libra. Es la exposición más inmediata: la obra ya está en marcha.",
+  },
+  {
+    concepto: "Plan de seguridad y salud y apertura del centro de trabajo",
+    quien: "Constructor, con verificación del promotor",
+    caracter: "obligatorio" as const,
+    urgencia: "alta" as const,
+    plazo: "Antes del inicio de obra — la obra arrancó el 31/08",
+    base: "RD 1627/1997",
+    detalle:
+      "El contratista redacta el plan a partir del estudio básico del proyecto y lo aprueba el coordinador antes de empezar. Van con él la comunicación de apertura del centro de trabajo a la autoridad laboral y el libro de incidencias en obra. Conviene pedir copia de los tres.",
+  },
+  {
+    concepto: "Seguro decenal y supervisión de OCT",
+    quien: "Promotor",
+    caracter: "exento" as const,
+    urgencia: "alta" as const,
+    plazo: "Decisión irreversible: el OCT tiene que supervisar desde cimentación",
+    base: "LOE, art. 19.1.c y Disposición Adicional Segunda",
+    coste: "Filas «Seguro de daños materiales decenal» y «Plan de Control de Calidad a la OCT», ambas a 0 €",
+    detalle:
+      "El autopromotor de una única vivienda unifamiliar para uso propio está exento. Pero si se vende dentro de los 10 años, la ley obliga a contratarlo por el tiempo restante, y ni el notario autoriza ni el Registro inscribe la venta sin acreditarlo, salvo exoneración expresa del comprador. El problema: no se puede contratar a posteriori sin que un OCT haya supervisado la obra. La pregunta real no es si es obligatorio, sino si se descarta vender en 10 años.",
+  },
+  {
+    concepto: "Seguro Todo Riesgo Construcción",
+    quien: "Promotor",
+    caracter: "opcional" as const,
+    urgencia: "media" as const,
+    plazo: "Antes de la FEIN: el banco puede exigirlo para permitir disposiciones",
+    base: "No previsto en la LOE; exigencia habitual de las entidades",
+    coste: "≈ 900–1.500 € (0,3–0,5% del presupuesto) · fila a 0 € en la hoja",
+    detalle:
+      "Cubre daños a la obra en curso —incendio, robo de material, temporal, colapso— y suele incluir responsabilidad civil del promotor. Es el seguro que de verdad protege el dinero ya invertido mientras la casa está a medias.",
+  },
+  {
+    concepto: "Responsabilidad civil del constructor",
+    quien: "Constructor",
+    caracter: "verificar" as const,
+    urgencia: "media" as const,
+    plazo: "Ya: pedir póliza vigente y recibo pagado",
+    base: "Exigencia contractual del promotor",
+    detalle:
+      "No basta con que diga que la tiene. Conviene pedir copia de la póliza en vigor con el justificante de pago, el certificado de estar al corriente con la Seguridad Social y la documentación de los trabajadores. Que él tenga póliza no cubre al promotor si resulta insolvente o si el siniestro cae fuera de su cobertura.",
+  },
+  {
+    concepto: "Retención del 5% por defectos de acabado",
+    quien: "Promotor",
+    caracter: "contractual" as const,
+    urgencia: "baja" as const,
+    plazo: "Al pactar las certificaciones con el constructor",
+    base: "LOE, art. 19.1.a",
+    coste: "13.250 € sobre el contrato principal",
+    detalle:
+      "La ley permite sustituir el seguro de acabados a un año por retener un 5% del importe de ejecución material durante ese año. Es la protección más barata que existe frente a defectos de terminación, pero hay que haberla pactado en el contrato.",
+  },
+];
+
 /** Alertas y decisiones abiertas. */
 export const alertas = [
   {
@@ -249,6 +322,12 @@ export const alertas = [
     titulo: "La obra ha empezado y la hipoteca no está firmada",
     detalle:
       "La obra arrancó el 31 de agosto de 2026 y Unicaja todavía no ha firmado. Hasta que se firme y empiecen las disposiciones, cada certificación que llegue hay que pagarla íntegra con ahorros, no sólo su IVA. Conviene cuadrar el calendario de certificaciones con la fecha de firma.",
+  },
+  {
+    nivel: "alta",
+    titulo: "Seguridad y salud sin cerrar con la obra en marcha",
+    detalle:
+      "La obra arrancó el 31 de agosto. Designar coordinador de seguridad y salud en ejecución es obligación del promotor, no del constructor, y con más de un interviniente en obra no es opcional. Falta confirmar además el plan de seguridad y salud aprobado y la apertura del centro de trabajo. Ver la sección de seguros y obligaciones.",
   },
   {
     nivel: "alta",

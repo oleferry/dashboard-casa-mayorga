@@ -7,6 +7,7 @@ import {
   SeccionCronologia,
   SeccionDocumentos,
   SeccionHipoteca,
+  SeccionObligaciones,
 } from "@/components/secciones";
 import {
   BarraApilada,
@@ -581,6 +582,7 @@ export default async function Panel_() {
         <SeccionHipoteca />
         <SeccionCronologia />
         <SeccionDocumentos />
+        <SeccionObligaciones />
         <SeccionAlertas />
 
         <footer className="tenue border-t pt-6 pb-4 text-xs leading-relaxed">

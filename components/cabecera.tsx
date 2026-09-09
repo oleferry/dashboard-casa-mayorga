@@ -11,6 +11,7 @@ const enlaces = [
   { href: "#hipoteca", texto: "Hipoteca" },
   { href: "#cronologia", texto: "Cronología" },
   { href: "#documentos", texto: "Documentos" },
+  { href: "#obligaciones", texto: "Seguros" },
   { href: "#alertas", texto: "Alertas" },
 ];
 
