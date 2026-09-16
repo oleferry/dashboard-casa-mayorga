@@ -1,59 +1,80 @@
 @import "tailwindcss";
 
-@theme {
+/*
+ * Los tokens viven en variables CSS para que cambien solos con el modo oscuro.
+ * `@theme inline` los expone como utilidades de Tailwind: los nombres propios
+ * del panel (marca, aviso, crítico…) y los que esperan los componentes de
+ * shadcn traídos de 21st.dev (background, card, primary, muted…).
+ */
+@theme inline {
   --font-sans:
-    ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial,
+    var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial,
     sans-serif;
 
-  --color-lienzo: #f4f5f7;
-  --color-panel: #ffffff;
-  --color-borde: #e3e6ea;
-  --color-tinta: #10151c;
-  --color-tenue: #5c6672;
-  --color-suave: #8b95a1;
+  --color-lienzo: var(--lienzo);
+  --color-panel: var(--panel);
+  --color-borde: var(--borde);
+  --color-tinta: var(--tinta);
+  --color-tenue: var(--tenue);
+  --color-suave: var(--suave);
+  --color-marca: var(--marca);
+  --color-marca-fondo: var(--marca-fondo);
+  --color-aviso: var(--aviso);
+  --color-aviso-fondo: var(--aviso-fondo);
+  --color-critico: var(--critico);
+  --color-critico-fondo: var(--critico-fondo);
+  --color-raya: var(--raya);
 
-  --color-marca: #0f766e;
-  --color-marca-suave: #d7ece9;
-  --color-aviso: #b45309;
-  --color-aviso-suave: #fbeedd;
-  --color-critico: #be123c;
-  --color-critico-suave: #fce7ec;
-  --color-neutro: #64748b;
+  --color-background: var(--lienzo);
+  --color-foreground: var(--tinta);
+  --color-card: var(--panel);
+  --color-muted: var(--raya);
+  --color-muted-foreground: var(--tenue);
+  --color-border: var(--borde);
+  --color-primary: var(--marca);
 }
 
 :root {
-  --lienzo: #f4f5f7;
+  --lienzo: #f5f6f8;
   --panel: #ffffff;
-  --panel-2: #fafbfc;
-  --borde: #e3e6ea;
-  --tinta: #10151c;
-  --tenue: #5c6672;
-  --suave: #8b95a1;
+  --panel-2: #f9fafb;
+  --borde: #e5e8ec;
+  --tinta: #0f141a;
+  --tenue: #5a6470;
+  --suave: #8a94a0;
   --marca: #0f766e;
-  --marca-fondo: #d7ece9;
+  --marca-fondo: #e0f1ee;
   --aviso: #b45309;
-  --aviso-fondo: #fbeedd;
+  --aviso-fondo: #fcf0e1;
   --critico: #be123c;
-  --critico-fondo: #fce7ec;
-  --raya: #eceff2;
+  --critico-fondo: #fdeaef;
+  --raya: #eef0f3;
+
+  --sombra-suave: 0 1px 2px rgb(15 20 26 / 0.04), 0 1px 3px rgb(15 20 26 / 0.04);
+  --sombra-media: 0 4px 16px -4px rgb(15 20 26 / 0.1), 0 2px 6px -2px rgb(15 20 26 / 0.05);
+  --sombra-flotante: 0 10px 30px -8px rgb(15 20 26 / 0.18), 0 4px 10px -4px rgb(15 20 26 / 0.08);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --lienzo: #0b0e12;
-    --panel: #141920;
-    --panel-2: #1a2029;
-    --borde: #262e39;
+    --lienzo: #0a0d11;
+    --panel: #12171d;
+    --panel-2: #171d25;
+    --borde: #232b35;
     --tinta: #e8ecf1;
     --tenue: #9aa5b1;
     --suave: #6b7683;
     --marca: #4db6a9;
-    --marca-fondo: #123330;
+    --marca-fondo: #10302c;
     --aviso: #e0a458;
-    --aviso-fondo: #33230f;
+    --aviso-fondo: #30210e;
     --critico: #f4708f;
-    --critico-fondo: #3a1220;
-    --raya: #1c232c;
+    --critico-fondo: #37121e;
+    --raya: #1a2028;
+
+    --sombra-suave: 0 1px 2px rgb(0 0 0 / 0.3);
+    --sombra-media: 0 4px 16px -4px rgb(0 0 0 / 0.5);
+    --sombra-flotante: 0 10px 30px -8px rgb(0 0 0 / 0.7);
   }
 }
 
@@ -63,7 +84,14 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 5.5rem;
+  /* En móvil la barra va abajo; en escritorio flota arriba y hay que dejarle hueco. */
+  scroll-padding-top: 1rem;
+}
+
+@media (min-width: 768px) {
+  html {
+    scroll-padding-top: 5.5rem;
+  }
 }
 
 body {
@@ -71,6 +99,7 @@ body {
   color: var(--tinta);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
+  font-feature-settings: "cv11", "ss01";
 }
 
 .cifra {
@@ -81,7 +110,14 @@ body {
 .panel {
   background: var(--panel);
   border: 1px solid var(--borde);
-  border-radius: 0.875rem;
+  border-radius: 1rem;
+  box-shadow: var(--sombra-suave);
+  /*
+   * Sin esto, un panel dentro de una rejilla crece hasta el ancho mínimo de su
+   * contenido aunque ese contenido tenga su propio scroll horizontal: una tabla
+   * ancha ensanchaba la columna y en móvil obligaba a alejar toda la página.
+   */
+  min-width: 0;
 }
 
 .tenue {
@@ -92,12 +128,34 @@ body {
   color: var(--suave);
 }
 
+/* Lo mismo para cualquier hijo de una rejilla, sea panel o simple envoltorio. */
+.grid > * {
+  min-width: 0;
+}
+
+/* Carrusel horizontal en móvil sin barra de desplazamiento visible. */
+.sin-barra {
+  scrollbar-width: none;
+}
+.sin-barra::-webkit-scrollbar {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
 @media print {
   .no-imprimir {
     display: none !important;
   }
   body {
     background: #fff;
+  }
+  .panel {
+    box-shadow: none;
   }
   details {
     display: block;

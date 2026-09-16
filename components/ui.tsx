@@ -1,4 +1,7 @@
 import type { ReactNode } from "react";
+import type { LucideIcon } from "lucide-react";
+import { CifraAnimada } from "./cifra-animada";
+import { cn } from "@/lib/utils";
 
 /* ---------------------------------------------------------------- Sección */
 
@@ -7,22 +10,31 @@ export function Seccion({
   titulo,
   descripcion,
   acciones,
+  icono: Icono,
   children,
 }: {
   id: string;
   titulo: string;
   descripcion?: string;
   acciones?: ReactNode;
+  icono?: LucideIcon;
   children: ReactNode;
 }) {
   return (
-    <section id={id} className="scroll-mt-24">
+    <section id={id}>
       <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
-        <div>
-          <h2 className="text-lg font-semibold tracking-tight sm:text-xl">{titulo}</h2>
-          {descripcion && (
-            <p className="tenue mt-1 max-w-2xl text-sm leading-relaxed">{descripcion}</p>
+        <div className="flex items-start gap-3">
+          {Icono && (
+            <span className="mt-0.5 grid size-9 shrink-0 place-items-center rounded-xl bg-marca-fondo text-marca">
+              <Icono size={18} strokeWidth={2.2} />
+            </span>
           )}
+          <div>
+            <h2 className="text-lg font-semibold tracking-tight sm:text-xl">{titulo}</h2>
+            {descripcion && (
+              <p className="tenue mt-1 max-w-2xl text-sm leading-relaxed">{descripcion}</p>
+            )}
+          </div>
         </div>
         {acciones}
       </div>
@@ -42,43 +54,75 @@ export function Panel({
   className?: string;
   padding?: boolean;
 }) {
-  return (
-    <div className={`panel ${padding ? "p-5" : ""} ${className}`}>{children}</div>
-  );
+  return <div className={cn("panel", padding && "p-5", className)}>{children}</div>;
 }
 
 /* -------------------------------------------------------------------- KPI */
 
+const TONOS = {
+  neutro: { color: "var(--tinta)", fondo: "var(--raya)", icono: "var(--tenue)" },
+  marca: { color: "var(--marca)", fondo: "var(--marca-fondo)", icono: "var(--marca)" },
+  aviso: { color: "var(--aviso)", fondo: "var(--aviso-fondo)", icono: "var(--aviso)" },
+  critico: { color: "var(--critico)", fondo: "var(--critico-fondo)", icono: "var(--critico)" },
+} as const;
+
 export function Kpi({
   etiqueta,
   valor,
+  numero,
+  sufijo,
   nota,
   tono = "neutro",
   destacado = false,
+  icono: Icono,
+  className,
 }: {
   etiqueta: string;
   valor: string;
+  /** Si se indica, la cifra se anima contando desde cero al entrar en pantalla. */
+  numero?: number;
+  sufijo?: string;
   nota?: string;
   tono?: "neutro" | "marca" | "aviso" | "critico";
   destacado?: boolean;
+  icono?: LucideIcon;
+  className?: string;
 }) {
-  const color =
-    tono === "marca"
-      ? "var(--marca)"
-      : tono === "aviso"
-        ? "var(--aviso)"
-        : tono === "critico"
-          ? "var(--critico)"
-          : "var(--tinta)";
+  const t = TONOS[tono];
 
   return (
     <div
-      className="panel flex flex-col justify-between gap-2 p-4"
-      style={destacado ? { borderColor: color } : undefined}
+      className={cn(
+        "panel relative flex flex-col gap-3 overflow-hidden p-4 transition-[transform,box-shadow] duration-200 hover:-translate-y-0.5 sm:p-5",
+        className,
+      )}
+      style={
+        destacado
+          ? {
+              backgroundImage: "linear-gradient(135deg, var(--marca-fondo) 0%, transparent 65%)",
+              borderColor: "color-mix(in srgb, var(--marca) 30%, var(--borde))",
+            }
+          : undefined
+      }
     >
-      <p className="suave text-[0.7rem] font-medium tracking-[0.08em] uppercase">{etiqueta}</p>
-      <p className="cifra text-[1.45rem] leading-tight font-semibold sm:text-2xl" style={{ color }}>
-        {valor}
+      <div className="flex items-start justify-between gap-3">
+        <p className="suave pt-1 text-[0.7rem] font-semibold tracking-[0.08em] uppercase">
+          {etiqueta}
+        </p>
+        {Icono && (
+          <span
+            className="grid size-8 shrink-0 place-items-center rounded-lg"
+            style={{ background: t.fondo, color: t.icono }}
+          >
+            <Icono size={16} strokeWidth={2.2} />
+          </span>
+        )}
+      </div>
+      <p
+        className="cifra text-[1.55rem] leading-none font-semibold tracking-tight sm:text-[1.75rem]"
+        style={{ color: t.color }}
+      >
+        {numero !== undefined ? <CifraAnimada valor={numero} sufijo={sufijo} /> : valor}
       </p>
       {nota && <p className="tenue text-xs leading-snug">{nota}</p>}
     </div>

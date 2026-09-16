@@ -1,3 +1,4 @@
+import { ClipboardCheck } from "lucide-react";
 import { BarraProgreso, Etiqueta, Kpi, Panel, Seccion, Td, Th } from "./ui";
 import { euros, fecha, fechaCorta, pct } from "@/lib/formato";
 import { COLUMNAS, PESTANA, type DatosCertificaciones } from "@/lib/certificaciones";
@@ -54,6 +55,7 @@ export function SeccionCertificaciones({
   return (
     <Seccion
       id="certificaciones"
+      icono={ClipboardCheck}
       titulo="Certificaciones de obra"
       descripcion="Registro de la obra ejecutada y reconocida por la dirección facultativa. Es la medida real del avance y lo que el banco libera en cada disposición."
       acciones={

@@ -1,4 +1,12 @@
 import {
+  CalendarClock,
+  FolderOpen,
+  Landmark,
+  Layers,
+  ShieldCheck,
+  TriangleAlert,
+} from "lucide-react";
+import {
   BarraProgreso,
   Etiqueta,
   ListaDatos,
@@ -22,6 +30,7 @@ export function SeccionCapitulos() {
   return (
     <Seccion
       id="capitulos"
+      icono={Layers}
       titulo="Capítulos de obra"
       descripcion="Desglose del proyecto técnico por capítulos. La estimación operativa reparte los 265.000 € del contrato principal según el peso de cada capítulo: sirve para validar certificaciones, no es un precio contractual."
     >
@@ -83,6 +92,7 @@ export function SeccionHipoteca() {
   return (
     <Seccion
       id="hipoteca"
+      icono={Landmark}
       titulo="Hipoteca"
       descripcion={hipoteca.estado}
       acciones={<Etiqueta tono="aviso">Pendiente de firma</Etiqueta>}
@@ -258,6 +268,7 @@ export function SeccionCronologia() {
   return (
     <Seccion
       id="cronologia"
+      icono={CalendarClock}
       titulo="Cronología"
       descripcion="Hitos administrativos y económicos del proyecto."
     >
@@ -299,6 +310,7 @@ export function SeccionDocumentos() {
   return (
     <Seccion
       id="documentos"
+      icono={FolderOpen}
       titulo="Documentación"
       descripcion="Todo el expediente en Google Drive. Los enlaces sólo funcionan para quien tenga acceso a la carpeta."
     >
@@ -367,6 +379,7 @@ export function SeccionObligaciones() {
   return (
     <Seccion
       id="obligaciones"
+      icono={ShieldCheck}
       titulo="Seguros y obligaciones legales"
       descripcion="Qué es obligatorio, qué le toca al constructor y qué conviene aunque no lo sea. Resumen orientativo de la LOE y el RD 1627/1997 para una autopromoción de vivienda unifamiliar de uso propio."
     >
@@ -436,6 +449,7 @@ export function SeccionAlertas() {
   return (
     <Seccion
       id="alertas"
+      icono={TriangleAlert}
       titulo="Alertas y decisiones abiertas"
       descripcion="Lo que hay que resolver o vigilar antes de que la obra avance."
     >

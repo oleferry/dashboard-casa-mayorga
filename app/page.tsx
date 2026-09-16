@@ -1,3 +1,16 @@
+import {
+  CalendarDays,
+  Coins,
+  HardHat,
+  House,
+  Landmark,
+  LayoutDashboard,
+  PiggyBank,
+  Receipt,
+  Ruler,
+  TrendingDown,
+  Wallet,
+} from "lucide-react";
 import { Cabecera } from "@/components/cabecera";
 import { SeccionCertificaciones } from "@/components/certificaciones";
 import {
@@ -48,7 +61,7 @@ export default async function Panel_() {
     <>
       <Cabecera enVivo={hoja.enVivo} leidoEn={hoja.leidoEn} />
 
-      <main className="mx-auto max-w-6xl space-y-14 px-5 py-10">
+      <main className="mx-auto max-w-6xl space-y-16 px-5 pt-8 pb-32 md:pt-10 md:pb-16">
         {!hoja.enVivo && (
           <div
             className="panel p-4 text-sm"
@@ -67,43 +80,63 @@ export default async function Panel_() {
 
         <Seccion
           id="resumen"
+          icono={LayoutDashboard}
           titulo="Resumen económico"
           descripcion="Coste total previsto del proyecto completo: obra, solar, impuestos, proyecto técnico y gastos de financiación."
         >
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="sin-barra -mx-5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-5 pb-1 sm:mx-0 sm:grid sm:grid-cols-2 sm:overflow-visible sm:px-0 sm:pb-0 lg:grid-cols-3">
             <Kpi
               etiqueta="Coste total de la casa"
               valor={euros(c.totalProyecto)}
+              numero={c.totalProyecto}
+              icono={House}
+              className="w-[82%] shrink-0 snap-start sm:w-auto"
               nota={`Obra con IVA, suelo, impuestos, honorarios y gastos · ${euros(c.costeM2Proyecto)}/m²`}
               destacado
             />
             <Kpi
               etiqueta="Cubre la hipoteca"
               valor={euros(c.hipotecaImporte)}
+              numero={c.hipotecaImporte}
+              icono={Landmark}
+              className="w-[82%] shrink-0 snap-start sm:w-auto"
               nota={`Contrato de ${euros(hipoteca.disposicionContrato)} más un ${pct(hipoteca.desviacionPrevista, 0)} de desviación · LTV ${pct(c.ltv)}`}
               tono="marca"
             />
             <Kpi
               etiqueta="Ahorros necesarios"
               valor={euros(c.ahorrosNecesarios)}
+              numero={c.ahorrosNecesarios}
+              icono={PiggyBank}
+              className="w-[82%] shrink-0 snap-start sm:w-auto"
               nota={`IVA, impuestos, honorarios y suelo · ${euros(c.pagado)} ya aportados (${pct(c.pagado / c.ahorrosNecesarios)})`}
               tono="aviso"
             />
             <Kpi
               etiqueta="Ahorros que faltan"
               valor={euros(c.ahorrosRestantes)}
+              numero={c.ahorrosRestantes}
+              icono={TrendingDown}
+              className="w-[82%] shrink-0 snap-start sm:w-auto"
               nota={`${euros(c.ahorrosConReserva - c.pagado)} si la obra se desvía un 5% sobre lo presupuestado`}
               tono="critico"
             />
             <Kpi
               etiqueta="Margen de hipoteca sin usar"
               valor={euros(cap.margenSinUsar)}
+              numero={cap.margenSinUsar}
+              icono={Wallet}
+              className="w-[82%] shrink-0 snap-start sm:w-auto"
               nota={`Queda por debajo del máximo de ${euros(cap.ofrecido)} que ofrece Unicaja`}
               tono="aviso"
             />
             <Kpi
               etiqueta="Coste bancario mensual"
               valor={`${euros(h.costeMensual)}/mes`}
+              numero={h.costeMensual}
+              sufijo="/mes"
+              icono={CalendarDays}
+              className="w-[82%] shrink-0 snap-start sm:w-auto"
               nota={`Tras la carencia · durante el primer año, hasta ${euros(h.costeMensualCarencia)}/mes de sólo intereses`}
             />
           </div>
@@ -312,6 +345,7 @@ export default async function Panel_() {
 
         <Seccion
           id="costes"
+          icono={Receipt}
           titulo="Costes acumulados por concepto"
           descripcion="Lectura directa de la hoja de control de costes. Cada bloque agrupa las partidas de un mismo concepto y acumula lo comprometido, lo pagado y lo pendiente."
           acciones={
@@ -325,10 +359,10 @@ export default async function Panel_() {
             </a>
           }
         >
-          <div className="mb-4 grid gap-3 sm:grid-cols-4">
-            <Kpi etiqueta="Comprometido" valor={euros(hoja.total)} />
-            <Kpi etiqueta="Pagado" valor={euros(hoja.pagado)} tono="marca" />
-            <Kpi etiqueta="Pendiente" valor={euros(hoja.pendiente)} tono="aviso" />
+          <div className="mb-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            <Kpi etiqueta="Comprometido" valor={euros(hoja.total)} numero={hoja.total} icono={Receipt} />
+            <Kpi etiqueta="Pagado" valor={euros(hoja.pagado)} numero={hoja.pagado} tono="marca" icono={Coins} />
+            <Kpi etiqueta="Pendiente" valor={euros(hoja.pendiente)} numero={hoja.pendiente} tono="aviso" icono={TrendingDown} />
             <Kpi
               etiqueta={`${pagadores.a.etiqueta} / ${pagadores.b.etiqueta}`}
               valor={`${euros(hoja.pagadoA)} / ${euros(hoja.pagadoB)}`}
@@ -444,6 +478,7 @@ export default async function Panel_() {
 
         <Seccion
           id="obra"
+          icono={HardHat}
           titulo="Ejecución de obra"
           descripcion="Presupuesto acordado con el constructor. Es la partida que financia la hipoteca y todavía no ha empezado a facturarse."
         >
@@ -527,11 +562,12 @@ export default async function Panel_() {
 
               <div className="mt-4 grid gap-3 sm:grid-cols-3">
                 <Kpi
+                  icono={Ruler}
                   etiqueta="Coste por m² sin IVA"
                   valor={euros(c.obra.costeM2SinIva)}
                   nota={`Sobre ${num(proyecto.superficieConstruida)} m² construidos`}
                 />
-                <Kpi etiqueta="Coste por m² con IVA" valor={euros(c.obra.costeM2ConIva)} />
+                <Kpi etiqueta="Coste por m² con IVA" valor={euros(c.obra.costeM2ConIva)} icono={Ruler} />
                 <Kpi
                   etiqueta="Certificado a fecha"
                   valor={euros(certificaciones.base)}
