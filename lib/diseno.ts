@@ -118,6 +118,11 @@ export const porElegir: { titulo: string; detalle: string }[] = [
 /** Documentos gráficos donde se ve el diseño. */
 export const referenciasDiseno = [
   {
+    titulo: "Carpeta de diseño",
+    detalle: "Imágenes e inspiración: aquí va lo que se enlace desde la pestaña Ideas.",
+    url: "https://drive.google.com/drive/folders/1n8suaO4pQa4ZAzd50pyXmcf7feAzQ_Uc",
+  },
+  {
     titulo: "Planos visados",
     detalle: "Incluyen los alzados con la fachada definitiva.",
     url: "https://drive.google.com/file/d/13QUDYNOnrMEUTRUFT1RnnaR6IUQj7S4S/view",

@@ -302,7 +302,7 @@ export const gruposDocumentales: GrupoDocumental[] = [
         descripcion:
           "Suministro provisional de obra, 5,75 kW. Refuerzo 107,70 € + entronque 28,32 € = 164,58 € con IVA. Referencia 9047509190, CUPS ES0021000044696052SB.",
         fecha: "2026-09-02",
-        url: carpeta("1atssVlrNnQMad_GR41I275MLtiMGeS7D"),
+        url: archivo("1nqQH4sDb80W-WjM0zYivVgClVGP9n9as"),
         clave: true,
       },
     ],
