@@ -19,6 +19,7 @@ concepto, los pagos realizados, la hipoteca y todo el expediente documental.
 | **Capítulos de obra** | Los 15 capítulos del proyecto técnico con su peso y la estimación operativa sobre el contrato |
 | **Hipoteca** | Condiciones de Unicaja, bonificaciones, coste mensual e intereses totales |
 | **Cronología** | Hitos administrativos y económicos |
+| **Diseño e ideas** | Lo que fijan el proyecto y la normativa, lo que queda por elegir, y las ideas propias leídas de la pestaña `Ideas` |
 | **Documentación** | Enlaces a Google Drive agrupados por tipo |
 | **Seguros y obligaciones** | Qué exigen la LOE y el RD 1627/1997 en autopromoción, qué le toca al constructor y qué decisiones siguen abiertas |
 | **Alertas** | Decisiones abiertas y riesgos por nivel |
@@ -93,7 +94,18 @@ pueden reordenar o añadir otras. Basta con que existan `Fecha` y una de
 > interpretar nada; sin esa comprobación el panel mostraría los costes del solar
 > como si fueran certificaciones de obra. `npm test` cubre justo ese caso.
 
-### 3. Datos maestros (en el repositorio)
+### 3. Ideas de diseño (en vivo)
+
+Pestaña **`Ideas`** de la misma hoja. Como en certificaciones, las columnas se
+localizan por nombre y basta con que exista `Idea`: `Área`, `Idea`, `Estado`
+(idea · por decidir · decidido · descartado), `Detalle`, `Enlace` y `Fecha`.
+Lo que ya fija el proyecto visado y la normativa municipal no va en la hoja
+sino en `lib/diseno.ts`, porque no cambia.
+
+La lectura de pestañas y la protección frente a pestañas inexistentes son
+comunes a certificaciones e ideas, en `lib/pestanas.ts`.
+
+### 4. Datos maestros (en el repositorio)
 
 Todo lo que no vive en la hoja se edita en archivos TypeScript:
 
@@ -106,7 +118,7 @@ Todo lo que no vive en la hoja se edita en archivos TypeScript:
 Para actualizar el panel basta con editar esos archivos y hacer push: Vercel
 despliega automáticamente.
 
-### 4. Modelo de financiación
+### 5. Modelo de financiación
 
 El banco presta un porcentaje del **menor** entre la tasación del edificio
 terminado y el coste total de la promoción (presupuesto de ejecución del
@@ -155,7 +167,7 @@ npm install
 npm run dev
 ```
 
-Las pruebas del lector de certificaciones:
+Las pruebas de los lectores de certificaciones e ideas:
 
 ```bash
 npm test
