@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "tsx lib/certificaciones.test.ts"
+    "test": "tsx lib/certificaciones.test.ts && tsx lib/ideas.test.ts"
   },
   "dependencies": {
     "next": "15.5.24",

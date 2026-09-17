@@ -82,6 +82,17 @@ body {
   background: var(--panel);
   border: 1px solid var(--borde);
   border-radius: 0.875rem;
+  /*
+   * Sin esto, un panel dentro de una rejilla crece hasta el ancho mínimo de su
+   * contenido aunque ese contenido tenga su propio scroll horizontal: una tabla
+   * ancha ensanchaba la columna y en móvil obligaba a alejar toda la página.
+   */
+  min-width: 0;
+}
+
+/* Lo mismo para cualquier hijo de una rejilla, sea panel o simple envoltorio. */
+.grid > * {
+  min-width: 0;
 }
 
 .tenue {

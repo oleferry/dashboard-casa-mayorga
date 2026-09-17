@@ -1,5 +1,6 @@
 import { Cabecera } from "@/components/cabecera";
 import { SeccionCertificaciones } from "@/components/certificaciones";
+import { SeccionDiseno } from "@/components/diseno";
 import {
   FichaProyecto,
   SeccionAlertas,
@@ -30,15 +31,17 @@ import {
 import { hojaCostes } from "@/lib/documentos";
 import { euros, fechaCorta, num, pct } from "@/lib/formato";
 import { leerCertificaciones } from "@/lib/certificaciones";
+import { leerIdeas } from "@/lib/ideas";
 import { leerHoja } from "@/lib/hoja";
 import { ejecucion, fechasPago, financiacion, hipoteca, pagadores, proyecto } from "@/lib/proyecto";
 
 export const revalidate = 300;
 
 export default async function Panel_() {
-  const [hoja, certificaciones] = await Promise.all([
+  const [hoja, certificaciones, ideas] = await Promise.all([
     leerHoja(fechasPago),
     leerCertificaciones(ejecucion.ivaTipo),
+    leerIdeas(),
   ]);
   const c = calcularProyecto(hoja);
   const h = calcularHipoteca();
@@ -581,6 +584,7 @@ export default async function Panel_() {
         <SeccionCapitulos />
         <SeccionHipoteca />
         <SeccionCronologia />
+        <SeccionDiseno ideas={ideas} />
         <SeccionDocumentos />
         <SeccionObligaciones />
         <SeccionAlertas />

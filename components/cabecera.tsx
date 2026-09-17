@@ -10,6 +10,7 @@ const enlaces = [
   { href: "#capitulos", texto: "Capítulos" },
   { href: "#hipoteca", texto: "Hipoteca" },
   { href: "#cronologia", texto: "Cronología" },
+  { href: "#diseno", texto: "Diseño" },
   { href: "#documentos", texto: "Documentos" },
   { href: "#obligaciones", texto: "Seguros" },
   { href: "#alertas", texto: "Alertas" },

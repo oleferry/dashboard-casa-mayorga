@@ -1,20 +1,15 @@
 /**
  * Registro de certificaciones de obra, leído de la pestaña «Certificaciones»
- * de la misma hoja de Google Sheets.
- *
- * Cuidado: si la pestaña no existe, el endpoint gviz devuelve la PRIMERA
- * pestaña con código 200 en lugar de dar error. Por eso no basta con que la
- * petición funcione: hay que comprobar que las cabeceras son las de una tabla
- * de certificaciones antes de interpretar nada.
+ * de la misma hoja de Google Sheets. La lectura común y la protección frente
+ * a pestañas inexistentes viven en `pestanas.ts`.
  */
 
-import { HOJA_ID, aNumero, parseCSV } from "./hoja";
+import { aNumero } from "./hoja";
+import { aFechaIso, descargarPestana, mapearCabeceras, normalizar } from "./pestanas";
+
+export { aFechaIso };
 
 export const PESTANA = "Certificaciones";
-
-const CSV_URL = `https://docs.google.com/spreadsheets/d/${HOJA_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(
-  PESTANA,
-)}`;
 
 export type EstadoCertificacion = "pendiente" | "aprobada" | "facturada" | "pagada";
 
@@ -62,64 +57,6 @@ export const COLUMNAS = {
 
 type Campo = keyof typeof COLUMNAS;
 
-const normalizar = (s: string) =>
-  s
-    .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "")
-    .toLowerCase()
-    .replace(/[^a-z0-9 ]/g, "")
-    .trim();
-
-/** Localiza la fila de cabecera y mapea cada campo a su índice de columna. */
-export function mapearCabeceras(filas: string[][]) {
-  for (let i = 0; i < Math.min(filas.length, 20); i++) {
-    const celdas = filas[i].map(normalizar);
-    const indices = {} as Record<Campo, number>;
-
-    for (const campo of Object.keys(COLUMNAS) as Campo[]) {
-      const alias = COLUMNAS[campo] as readonly string[];
-      let idx = celdas.findIndex((c) => c !== "" && alias.includes(c));
-      if (idx < 0) {
-        idx = celdas.findIndex((c) => c !== "" && alias.some((a) => c.startsWith(a)));
-      }
-      indices[campo] = idx;
-    }
-
-    // Sin fecha y sin ningún importe no es una tabla de certificaciones.
-    // Este es el filtro que descarta la pestaña de costes que Google
-    // devuelve cuando la pestaña pedida no existe.
-    const tieneImporte = indices.base >= 0 || indices.total >= 0;
-    if (indices.fecha >= 0 && tieneImporte) return { fila: i, indices };
-  }
-
-  return null;
-}
-
-/** Convierte "15/10/2026", "2026-10-15" o "15-10-2026" a ISO. */
-export function aFechaIso(valor: string | undefined): string | undefined {
-  if (!valor) return undefined;
-  const v = valor.trim();
-  if (!v) return undefined;
-
-  const iso = v.match(/^(\d{4})-(\d{2})-(\d{2})/);
-  if (iso) return `${iso[1]}-${iso[2]}-${iso[3]}`;
-
-  const dmy = v.match(/^(\d{1,2})[/-](\d{1,2})[/-](\d{4})/);
-  if (dmy) {
-    const [, d, m, a] = dmy;
-    return `${a}-${m.padStart(2, "0")}-${d.padStart(2, "0")}`;
-  }
-
-  // gviz devuelve a veces Date(2026,9,15) con el mes empezando en cero.
-  const gviz = v.match(/^Date\((\d+),(\d+),(\d+)/);
-  if (gviz) {
-    const [, a, m, d] = gviz;
-    return `${a}-${String(Number(m) + 1).padStart(2, "0")}-${d.padStart(2, "0")}`;
-  }
-
-  return undefined;
-}
-
 export function aEstado(valor: string | undefined): EstadoCertificacion {
   const v = normalizar(valor ?? "");
   if (v.startsWith("pagad") || v.startsWith("cobrad")) return "pagada";
@@ -132,7 +69,13 @@ export function interpretarCertificaciones(
   filas: string[][],
   ivaTipo: number,
 ): Omit<DatosCertificaciones, "error"> {
-  const cabecera = mapearCabeceras(filas);
+  // Sin fecha y sin ningún importe no es una tabla de certificaciones: es el
+  // filtro que descarta la pestaña de costes cuando esta no existe.
+  const cabecera = mapearCabeceras(
+    filas,
+    COLUMNAS,
+    (i) => i.fecha >= 0 && (i.base >= 0 || i.total >= 0),
+  );
 
   const vacio = {
     lineas: [],
@@ -204,19 +147,7 @@ export function interpretarCertificaciones(
 
 export async function leerCertificaciones(ivaTipo: number): Promise<DatosCertificaciones> {
   try {
-    const respuesta = await fetch(CSV_URL, {
-      next: { revalidate: 300 },
-      headers: { "User-Agent": "dashboard-casa-mayorga" },
-    });
-
-    if (!respuesta.ok) throw new Error(`La hoja respondió ${respuesta.status}`);
-
-    const texto = await respuesta.text();
-    if (texto.trimStart().startsWith("<")) {
-      throw new Error("La hoja no es pública; Google devolvió una página de acceso");
-    }
-
-    return interpretarCertificaciones(parseCSV(texto), ivaTipo);
+    return interpretarCertificaciones(await descargarPestana(PESTANA), ivaTipo);
   } catch (e) {
     return {
       lineas: [],
