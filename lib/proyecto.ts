@@ -18,7 +18,7 @@ export const proyecto = {
   fechaVisado: "2025-10-08",
   fechaLicencia: "2026-01-07",
   inicioObra: "2026-08-31",
-  primeraFacturaPrevista: "2026-10-15",
+  primeraCertificacion: "2026-09-23",
 };
 
 /** Presupuesto de ejecución acordado con el constructor. */
@@ -239,7 +239,11 @@ export const hitos = [
     titulo: "Certificado de instalación eléctrica de obra inscrito — 47/BT/188819",
     estado: "hecho",
   },
-  { fecha: "2026-10-15", titulo: "Primera factura de obra prevista", estado: "previsto" },
+  {
+    fecha: "2026-09-23",
+    titulo: "1.ª certificación de Polo Redondo (factura 094/26) — 54.000 € + IVA = 59.400 €",
+    estado: "hecho",
+  },
 ] as { fecha: string; titulo: string; estado: "hecho" | "previsto" }[];
 
 /**
@@ -348,16 +352,16 @@ export const alertas = [
       "Los 164,58 € de I-DE y el boletín 47/BT/188819 cubren sólo el suministro provisional de obra, que caduca cuando termine la obra. El alta definitiva de la vivienda —derechos de enganche de luz, su propio boletín eléctrico y el alta de agua— sigue a 0 € en la hoja. Conviene pedir presupuesto para que no aparezca por sorpresa al final.",
   },
   {
-    nivel: "media",
-    titulo: "Honorarios del aparejador comprometidos y sin nota de pago",
+    nivel: "alta",
+    titulo: "Pagar la 1.ª certificación: 59.400 € y confirmar antes la cuenta",
     detalle:
-      "Los 2.625 € de la dirección de ejecución material están comprometidos pero no pagados, y todavía no hay factura ni justificante. Con la obra ya iniciada conviene cerrar cuándo y cómo se abona.",
+      "Polo Redondo ha facturado el 23 de septiembre la 1.ª certificación: 54.000 € + 10 % de IVA. El contrato da 8 días para pagarla y, sin hipoteca firmada, sale íntegra de ahorros. La cuenta de la factura (BBVA …2291) no es la del contrato (BBVA …0530): confirmarla por teléfono con el constructor antes de transferir. La factura trae además la dirección como «C/ La Salud, 11», «Maorga», «Ferandez» y los NIF cruzados; si el banco la va a usar como justificante de disposición, conviene pedir que la rectifiquen.",
   },
   {
-    nivel: "baja",
-    titulo: "El IVA del aparejador se calcula sobre una base distinta a la que suma",
+    nivel: "media",
+    titulo: "Dirección de obra del arquitecto y del aparejador sin facturar",
     detalle:
-      "En la hoja, el impuesto de esa fila sale del 21% de 2.500 € (525 €) pero la base que se suma para el total son 2.100 €, de donde salen los 2.625 €. O la base son 2.500 € y el total serían 3.025 €, o el impuesto va sobre 2.100 € y serían 2.541 €. Conviene contrastarlo con el presupuesto del aparejador.",
+      "Son dos honorarios distintos, de 2.100 € + IVA cada uno (2.541 €). Están comprometidos pero sin factura ni pago. Según el presupuesto del arquitecto, su dirección de obra se paga un 50 % al comienzo de la obra, un 25 % con la cubierta y un 25 % antes del certificado final, así que el primer 50 % ya toca. Falta cerrar cómo cobra el aparejador.",
   },
   {
     nivel: "media",

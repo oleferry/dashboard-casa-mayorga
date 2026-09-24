@@ -233,8 +233,8 @@ function SinCertificaciones({ datos }: { datos: DatosCertificaciones }) {
             {lista ? "La hoja está lista, aún sin certificaciones" : "Todavía no hay certificaciones"}
           </h3>
           <p className="tenue mt-1 text-sm leading-relaxed">
-            La obra arrancó el {fecha(proyecto.inicioObra)} y la primera factura está prevista para
-            el {fecha(proyecto.primeraFacturaPrevista)}.
+            La obra arrancó el {fecha(proyecto.inicioObra)} y la primera certificación se facturó
+            el {fecha(proyecto.primeraCertificacion)}.
           </p>
         </div>
         <Etiqueta tono={lista ? "marca" : "neutro"}>

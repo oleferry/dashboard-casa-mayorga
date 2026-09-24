@@ -522,10 +522,10 @@ export function FichaProyecto() {
           { clave: "Constructor", valor: proyecto.constructor },
           { clave: "Arquitecto", valor: proyecto.arquitecto },
           {
-            clave: "Primera factura prevista",
+            clave: "Primera certificación",
             valor: (
               <span style={{ color: "var(--aviso)" }}>
-                {fecha(proyecto.primeraFacturaPrevista)}
+                {fecha(proyecto.primeraCertificacion)}
               </span>
             ),
           },

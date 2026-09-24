@@ -120,6 +120,13 @@ export const gruposDocumentales: GrupoDocumental[] = [
     descripcion: "Ofertas recibidas y presupuesto vigente de ejecución.",
     documentos: [
       {
+        titulo: "Factura 094/26 — 1.ª certificación",
+        descripcion: "Septiembre: 54.000 € + 10 % IVA = 59.400 €. Cuenta distinta a la del contrato: confirmar antes de pagar.",
+        fecha: "2026-09-23",
+        url: archivo("13FWjaCeMa1mavZYqkBDtn0zlid-lt3Sa"),
+        clave: true,
+      },
+      {
         titulo: "Resumen de presupuesto (julio 2026)",
         descripcion: "Última versión firmada por la dirección de ejecución.",
         fecha: "2026-07-08",
