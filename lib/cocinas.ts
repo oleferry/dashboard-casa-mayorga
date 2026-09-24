@@ -261,10 +261,10 @@ export const proveedoresCocina: Proveedor[] = [
     email: "info@parracocinas.com",
     telefono: "983 856 876 · 633 192 020",
     web: "https://www.parracocinas.com/",
-    estado: "cita",
+    estado: "planos-enviados",
     ultimoContacto: "2026-09-24",
-    ultimaNota: "Se desplazan a Mayorga; les pedimos huecos para la cita en su estudio.",
-    proximoPaso: "Elegir día de cita en el estudio.",
+    ultimaNota: "Se desplazan a Mayorga y proponen cita en su estudio; tienen planos e idea.",
+    proximoPaso: "Cita en espera: primero comparar propuestas por correo.",
     hilo: "1877136328850623883",
   },
   {
