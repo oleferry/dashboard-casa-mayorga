@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   CalendarClock,
+  ChefHat,
   ClipboardCheck,
   Ellipsis,
   FolderOpen,
@@ -30,6 +31,7 @@ const SECCIONES: NavItem[] = [
   { id: "hipoteca", name: "Hipoteca", icon: Landmark },
   { id: "cronologia", name: "Cronología", icon: CalendarClock },
   { id: "diseno", name: "Diseño", icon: Lightbulb },
+  { id: "cocina", name: "Cocina", icon: ChefHat },
   { id: "documentos", name: "Documentos", icon: FolderOpen },
   { id: "obligaciones", name: "Seguros", icon: ShieldCheck },
   { id: "alertas", name: "Alertas", icon: TriangleAlert },

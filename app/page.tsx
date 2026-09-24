@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { Cabecera } from "@/components/cabecera";
 import { SeccionCertificaciones } from "@/components/certificaciones";
+import { SeccionCocina } from "@/components/cocinas";
 import { SeccionDiseno } from "@/components/diseno";
 import {
   FichaProyecto,
@@ -621,6 +622,7 @@ export default async function Panel_() {
         <SeccionHipoteca />
         <SeccionCronologia />
         <SeccionDiseno ideas={ideas} />
+        <SeccionCocina />
         <SeccionDocumentos />
         <SeccionObligaciones />
         <SeccionAlertas />
