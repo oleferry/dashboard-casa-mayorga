@@ -361,7 +361,7 @@ export const alertas = [
     nivel: "media",
     titulo: "Dirección de obra del arquitecto y del aparejador sin facturar",
     detalle:
-      "Son dos honorarios distintos, de 2.100 € + IVA cada uno (2.541 €). Están comprometidos pero sin factura ni pago. Según el presupuesto del arquitecto, su dirección de obra se paga un 50 % al comienzo de la obra, un 25 % con la cubierta y un 25 % antes del certificado final, así que el primer 50 % ya toca. Falta cerrar cómo cobra el aparejador.",
+      "Son dos honorarios distintos: el arquitecto, 2.100 € + IVA (2.541 €), y el aparejador, 2.625 € con IVA incluido (2.169,42 € de base). Están comprometidos pero sin factura ni pago. Según el presupuesto del arquitecto, su dirección de obra se paga un 50 % al comienzo de la obra, un 25 % con la cubierta y un 25 % antes del certificado final, así que el primer 50 % ya toca. Falta cerrar cómo cobra el aparejador.",
   },
   {
     nivel: "media",
