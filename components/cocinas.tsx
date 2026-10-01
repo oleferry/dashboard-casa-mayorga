@@ -129,6 +129,17 @@ export function SeccionCocina() {
                           IVA muebles {Math.round(p.presupuesto.ivaMuebles * 100)} %
                         </span>
                       )}
+                      <span className="suave block text-xs">sin IVA</span>
+                      {p.presupuesto?.documento && (
+                        <a
+                          href={p.presupuesto.documento}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="suave block text-xs hover:underline"
+                        >
+                          Ver PDF ↗
+                        </a>
+                      )}
                     </>
                   ) : (
                     <span className="suave">—</span>

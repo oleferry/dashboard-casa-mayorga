@@ -297,6 +297,14 @@ export const gruposDocumentales: GrupoDocumental[] = [
       "Altas de luz y agua. La acometida provisional de obra ya tiene propuesta; la definitiva de la vivienda está sin pedir.",
     documentos: [
       {
+        titulo: "Factura de I-DE (Iberdrola) — acometida provisional de obra",
+        descripcion:
+          "Factura 03260907010000269: entronque 28,32 € + refuerzo de red 107,70 € + IVA 21 % 28,56 € = 164,58 €. Pagada por Bizum. Contrato 9047509190.",
+        fecha: "2026-09-07",
+        url: archivo("1yIJs5ZTNxa49MgMenPcfxIxn6GHWq8A8"),
+        clave: true,
+      },
+      {
         titulo: "Certificado de instalación eléctrica de obra",
         descripcion:
           "Boletín inscrito en el Servicio Territorial de Industria de Valladolid, registro 47/BT/188819. Instalación temporal para maquinaria de obra, grupo D1: 9.200 W admisibles, 230 V monofásica. Vigencia: la duración de la obra. Instalador Francisco Javier Cela Maniega, nº 47-I-BTE1-5416.",

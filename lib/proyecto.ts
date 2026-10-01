@@ -341,12 +341,6 @@ export const alertas = [
   },
   {
     nivel: "media",
-    titulo: "Falta subir el justificante del pago a I-DE",
-    detalle:
-      "Los 164,58 € de la acometida provisional se pagaron el 3 de septiembre de 2026, pero I-DE exige remitir copia del justificante a través del área privada del representante que gestiona el expediente. Hasta que no conste, el expediente 9047509190 no avanza.",
-  },
-  {
-    nivel: "media",
     titulo: "La acometida definitiva de la vivienda no está presupuestada",
     detalle:
       "Los 164,58 € de I-DE y el boletín 47/BT/188819 cubren sólo el suministro provisional de obra, que caduca cuando termine la obra. El alta definitiva de la vivienda —derechos de enganche de luz, su propio boletín eléctrico y el alta de agua— sigue a 0 € en la hoja. Conviene pedir presupuesto para que no aparezca por sorpresa al final.",
