@@ -104,7 +104,7 @@ export default async function Panel_() {
               numero={c.hipotecaImporte}
               icono={Landmark}
               className="w-[82%] shrink-0 snap-start sm:w-auto"
-              nota={`Contrato de ${euros(hipoteca.disposicionContrato)} más un ${pct(hipoteca.desviacionPrevista, 0)} de desviación · LTV ${pct(c.ltv)}`}
+              nota={`Importe de la FEIN de ${hipoteca.entidad} · LTV ${pct(c.ltv)}`}
               tono="marca"
             />
             <Kpi
@@ -131,7 +131,11 @@ export default async function Panel_() {
               numero={cap.margenSinUsar}
               icono={Wallet}
               className="w-[82%] shrink-0 snap-start sm:w-auto"
-              nota={`Queda por debajo del máximo de ${euros(cap.ofrecido)} que ofrece Unicaja`}
+              nota={
+                cap.margenSinUsar > 0
+                  ? `Queda por debajo del máximo de ${euros(cap.ofrecido)} que ofrece ${hipoteca.entidad}`
+                  : `La FEIN es de ${euros(cap.ofrecido)}: no queda margen para desviaciones`
+              }
               tono="aviso"
             />
             <Kpi
@@ -141,7 +145,7 @@ export default async function Panel_() {
               sufijo="/mes"
               icono={CalendarDays}
               className="w-[82%] shrink-0 snap-start sm:w-auto"
-              nota={`Tras la carencia · durante el primer año, hasta ${euros(h.costeMensualCarencia)}/mes de sólo intereses`}
+              nota={`Tras la carencia · durante los ${hipoteca.carenciaMeses} meses de carencia, hasta ${euros(h.costeMensualCarencia)}/mes de sólo intereses`}
             />
           </div>
 
@@ -212,10 +216,9 @@ export default async function Panel_() {
               </div>
 
               <p className="tenue mt-4 border-t pt-3 text-xs leading-relaxed">
-                La disposición prevista ya incluye un {pct(hipoteca.desviacionPrevista, 0)} sobre el
-                contrato ({euros(hipoteca.disposicionPrevista - hipoteca.disposicionContrato)}) como
-                colchón. Si la obra llega a desviarse ese {pct(hipoteca.desviacionPrevista, 0)} de
-                verdad ({euros(c.obra.reserva)} con IVA), los ahorros necesarios suben a{" "}
+                La FEIN es de {euros(hipoteca.disposicionPrevista)}, justo el contrato, así que no
+                queda colchón dispuesto para desviaciones. Si la obra se desvía un 5% ({euros(c.obra.reserva)}{" "}
+                con IVA), los ahorros necesarios suben a{" "}
                 <strong>{euros(c.ahorrosConReserva)}</strong>. La tasación en hipótesis de edificio
                 terminado es de {euros(hipoteca.tasacion)}, es decir {euros(c.plusvaliaTeorica)} por
                 encima del coste total previsto.
@@ -257,7 +260,7 @@ export default async function Panel_() {
                     valor: euros(cap.limiteTeorico),
                   },
                   {
-                    clave: "Ofrecido por Unicaja",
+                    clave: "Importe de la FEIN",
                     nota: `${pct(cap.porcentajeOfrecido)} de la base`,
                     valor: <span className="font-semibold">{euros(cap.ofrecido)}</span>,
                   },
@@ -330,15 +333,25 @@ export default async function Panel_() {
                   {hipoteca.seguroSaludAnual > 0
                     ? ` y seguro de salud (${euros(hipoteca.seguroSaludAnual / 12)}/mes)`
                     : "; el seguro de salud todavía no está incluido, falta la cifra"}
-                  . Durante el año de carencia sólo se pagan intereses de lo dispuesto, así que la
+                  . Durante los {hipoteca.carenciaMeses} meses de carencia sólo se pagan intereses de lo dispuesto, así que la
                   cifra pequeña es el techo de esa fase: al principio será mucho menor, porque el
                   capital se dispone a plazos.
                 </p>
                 <p>
                   Cada 1.000 € más de disposición son 1.000 € menos de bolsillo, a cambio de{" "}
                   {euros(cuotaFrancesa(1000, hipoteca.tinFinal, hipoteca.plazoMeses))}/mes más de
-                  cuota. Llegar al máximo de {euros(cap.ofrecido)} liberaría{" "}
-                  <strong>{euros(cap.margenSinUsar)}</strong> más.
+                  cuota.{" "}
+                  {cap.margenSinUsar > 0 ? (
+                    <>
+                      Llegar al máximo de {euros(cap.ofrecido)} liberaría{" "}
+                      <strong>{euros(cap.margenSinUsar)}</strong> más.
+                    </>
+                  ) : (
+                    <>
+                      Pero la FEIN se queda en {euros(cap.ofrecido)}: disponer más exigiría pedir al
+                      banco que la amplíe.
+                    </>
+                  )}
                 </p>
               </div>
             </Panel>

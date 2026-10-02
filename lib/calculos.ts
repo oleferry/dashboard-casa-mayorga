@@ -195,7 +195,7 @@ export function calcularHipoteca() {
 
   const cuotaCarencia = cuotaSoloIntereses(hipoteca.disposicionPrevista, hipoteca.tinFinal);
   // Durante la obra el capital se dispone a plazos, así que el interés medio
-  // del año de carencia se estima sobre la mitad de lo que se acabe disponiendo.
+  // de la carencia se estima sobre la mitad de lo que se acabe disponiendo.
   const interesesCarenciaEstimados =
     (hipoteca.disposicionPrevista / 2) * hipoteca.tinFinal * (hipoteca.carenciaMeses / 12);
 

@@ -210,6 +210,70 @@ export const gruposDocumentales: GrupoDocumental[] = [
         clave: true,
       },
       {
+        titulo: "Unicaja — FEIN",
+        descripcion:
+          "Oferta vinculante: 265.000 € a 360 meses, de los que 18 son de carencia. Fijo al 2,40 % los 6 primeros meses y después al 3,40 %, con hasta 1 punto de bonificación (mínimo 2,40 %). Cuota sin bonificar de 1.211,33 €. Válida hasta el 31/10/2026.",
+        fecha: "2026-10-01",
+        url: archivo("1D2Oocs3NvVu3wL6pvskyNTGNLH3PwAbs"),
+        clave: true,
+      },
+      {
+        titulo: "Unicaja — Advertencia de asesoramiento notarial",
+        descripcion:
+          "Copia firmada. Préstamo nº 21036320520500000125. Los dos titulares deben pasar por el notario antes de firmar, y la escritura no puede otorgarse hasta 10 días naturales después de la última documentación entregada.",
+        fecha: "2026-10-01",
+        url: archivo("1vdWug7BebeI-BQsjxxyiuzCC5fCAuHee"),
+        clave: true,
+      },
+      {
+        titulo: "Unicaja — FiAE, ficha de advertencias",
+        descripcion:
+          "Gastos a vuestro cargo: tasación (235,95 €) y copias que pidáis. Vencimiento anticipado sólo con impagos de 12 cuotas en la primera mitad del préstamo o de 15 en la segunda.",
+        fecha: "2026-10-01",
+        url: archivo("1o0wIdxHW57iEnLdzof3V0-gVa2bJjLs4"),
+      },
+      {
+        titulo: "Unicaja — Distribución de gastos",
+        descripcion:
+          "El banco paga notaría, registro, gestoría y el impuesto de actos jurídicos documentados de la hipoteca; vosotros, la tasación, las copias que pidáis y la cancelación futura.",
+        fecha: "2026-10-01",
+        url: archivo("1eC60praJ6LVscPURxgY3cRZGur9RTT2C"),
+      },
+      {
+        titulo: "Unicaja — Solicitud de préstamo hipotecario",
+        descripcion:
+          "Se pidieron 296.000 € a 30 años, «Hipoteca Oxígeno» a tipo fijo, para construcción de primera vivienda en autopromoción; la FEIN se ha quedado en 265.000 €. Expediente 2026632000000016.",
+        fecha: "2026-09-03",
+        url: archivo("157XwCtYknwDiady7FSVO_henDmQknsAb"),
+      },
+      {
+        titulo: "Unicaja — Ficha precontractual (FIPRE)",
+        descripcion:
+          "Orientativa, con un ejemplo de 150.000 €: 2,40 % los 6 primeros meses y después 3,40 % sin bonificar o 2,40 % con la bonificación máxima. Sin comisión de apertura.",
+        fecha: "2026-09-03",
+        url: archivo("1y02hNlCz74wI7ZC54DGRLxwRUH9gtT6_"),
+      },
+      {
+        titulo: "Unicaja — Declaración de bienes de María",
+        descripcion:
+          "Revisar antes de la firma: profesión «amas de casa», la casa de Calle Salud declarada como chalet de 361.327 € y una deuda de 5.112 €.",
+        fecha: "2026-09-11",
+        url: archivo("1zPgxjo2siSxzAoGteuUs16HQQM8pZvIJ"),
+      },
+      {
+        titulo: "Unicaja — Contrato de la cuenta corriente",
+        descripcion:
+          "Cuenta ES84 2103 6320 5700 3000 0249 para domiciliar la hipoteca. La carpeta incluye también sus comisiones y la información precontractual.",
+        fecha: "2026-09-01",
+        url: archivo("1WaMUSlccrLwnq5q-A4pCAx5f2J_tUPes"),
+      },
+      {
+        titulo: "Unicaja — Documentación de la hipoteca",
+        descripcion:
+          "Carpeta con todo lo que ha entregado el banco, ordenado en oferta y notaría, solicitud y estudio, y cuenta corriente.",
+        url: carpeta("1PBJ9NkPlTE1pY7mjNMVxzaiBiZclTtKj"),
+      },
+      {
         titulo: "Dossier de hipoteca de autopromoción",
         descripcion: "Documento presentado a las entidades.",
         fecha: "2025-11-30",

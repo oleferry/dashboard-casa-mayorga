@@ -93,24 +93,24 @@ export const financiacion = {
    */
   escenarios: [
     {
-      etiqueta: "Sólo el contrato",
+      etiqueta: "FEIN de Unicaja",
       disposicion: 265000,
-      nota: "Sin margen para desviaciones de obra",
+      nota: "Lo que se va a firmar: el contrato, sin margen para desviaciones de obra",
     },
     {
       etiqueta: "Contrato más un 5% de desviación",
       disposicion: 278250,
-      nota: "Deja dispuesto el colchón para absorber sobrecostes de obra",
+      nota: "Habría que pedir ampliar la FEIN",
     },
     {
       etiqueta: "Toda la ejecución sin IVA",
       disposicion: 280000,
-      nota: "Contrato principal más los 15.000 € facturados aparte",
+      nota: "Contrato más los 15.000 € facturados aparte; habría que ampliar la FEIN",
     },
     {
-      etiqueta: "Máximo ofrecido por Unicaja",
+      etiqueta: "Lo solicitado en septiembre",
       disposicion: 296000,
-      nota: "Techo de la oferta; absorbería también parte del IVA",
+      nota: "Importe de la solicitud; la FEIN no llega a él",
     },
   ],
 };
@@ -133,26 +133,30 @@ export const pagadores = {
 /** Hipoteca seleccionada. */
 export const hipoteca = {
   entidad: "Unicaja",
-  estado: "Seleccionada — pendiente de aprobación definitiva, FEIN y firma",
-  importeMaximoOfrecido: 296000,
+  estado: "FEIN de 265.000 € (válida hasta el 31/10) · préstamo nº …0125 · firma no antes del 11/10",
   /**
-   * Disposición prevista: el contrato principal más un 5% de desviación, para
-   * dejar dispuesto el colchón de sobrecostes en lugar de cubrirlo con ahorros.
+   * Importe de la FEIN del 1 de octubre de 2026. Se solicitaron 296.000 €,
+   * pero la oferta vinculante se ha quedado en el contrato real.
    */
-  disposicionPrevista: 278250,
+  importeMaximoOfrecido: 265000,
+  /**
+   * La FEIN limita el préstamo a 265.000 €, así que no hay colchón dispuesto:
+   * cualquier desviación de obra sale de ahorros.
+   */
+  disposicionPrevista: 265000,
   disposicionContrato: 265000,
-  desviacionPrevista: 0.05,
+  desviacionPrevista: 0,
   /**
-   * 30 años en total: un año de carencia en el que sólo se pagan intereses de
-   * lo dispuesto, y 29 de amortización. El plazo son los meses que se amortizan.
+   * 30 años en total según la FEIN: 18 meses de carencia en los que sólo se
+   * pagan intereses de lo dispuesto, y 342 cuotas de amortización.
    */
-  plazoMeses: 348,
-  carenciaMeses: 12,
+  plazoMeses: 342,
+  carenciaMeses: 18,
   tinBase: 0.034,
   bonificacionTotal: 0.0085,
   tinFinal: 0.0255,
-  /** Cuota que ofreció el banco, para una disposición de 265.000 €. */
-  cuotaReferencia: { capital: 265000, cuota: 1053.97 },
+  /** Cuota de la FEIN para 265.000 €, sin bonificar (3,40 %, 342 cuotas). */
+  cuotaReferencia: { capital: 265000, cuota: 1211.33 },
   comisionApertura: 0,
   comisionAmortizacionAnticipada: 0.005,
   tasacion: 424018.8,
@@ -235,6 +239,11 @@ export const hitos = [
     estado: "hecho",
   },
   {
+    fecha: "2026-09-03",
+    titulo: "Solicitud de hipoteca a Unicaja — 296.000 € a 30 años",
+    estado: "hecho",
+  },
+  {
     fecha: "2026-09-06",
     titulo: "Certificado de instalación eléctrica de obra inscrito — 47/BT/188819",
     estado: "hecho",
@@ -243,6 +252,21 @@ export const hitos = [
     fecha: "2026-09-23",
     titulo: "1.ª certificación de Polo Redondo (factura 094/26) — 54.000 € + IVA = 59.400 €",
     estado: "hecho",
+  },
+  {
+    fecha: "2026-10-01",
+    titulo: "FEIN de Unicaja: 265.000 € a 30 años con 18 meses de carencia — préstamo nº 21036320520500000125",
+    estado: "hecho",
+  },
+  {
+    fecha: "2026-10-11",
+    titulo: "Primera fecha posible para firmar la hipoteca ante notario",
+    estado: "previsto",
+  },
+  {
+    fecha: "2026-10-31",
+    titulo: "Caduca la FEIN: hay que haber firmado antes",
+    estado: "previsto",
   },
 ] as { fecha: string; titulo: string; estado: "hecho" | "previsto" }[];
 
@@ -325,7 +349,7 @@ export const alertas = [
     nivel: "alta",
     titulo: "La obra ha empezado y la hipoteca no está firmada",
     detalle:
-      "La obra arrancó el 31 de agosto de 2026 y Unicaja todavía no ha firmado. Hasta que se firme y empiecen las disposiciones, cada certificación que llegue hay que pagarla íntegra con ahorros, no sólo su IVA. Conviene cuadrar el calendario de certificaciones con la fecha de firma.",
+      "La obra arrancó el 31 de agosto de 2026 y la hipoteca no puede firmarse antes del 11 de octubre. Hasta que se firme y empiecen las disposiciones, cada certificación que llegue hay que pagarla íntegra con ahorros, no sólo su IVA. Conviene cuadrar el calendario de certificaciones con la fecha de firma.",
   },
   {
     nivel: "alta",
@@ -335,9 +359,15 @@ export const alertas = [
   },
   {
     nivel: "alta",
-    titulo: "Formalización hipotecaria sin cerrar",
+    titulo: "Firmar la hipoteca entre el 11 y el 31 de octubre, después de pasar por el notario",
     detalle:
-      "Unicaja está seleccionada pero no aprobada en firme. Faltan la FEIN, la revisión de condiciones y la firma. Hasta entonces la cuota y el tipo son una previsión.",
+      "La FEIN del 1 de octubre es por 265.000 € a 30 años: 18 meses de carencia y 342 cuotas. Va al 2,40 % fijo los 6 primeros meses y al 3,40 % después, con hasta un punto de bonificación (el tipo nunca baja del 2,40 %). Sin bonificar, la cuota es de 1.211,33 €; en la carencia, unos 540 € si estuviera todo dispuesto. Los dos tenéis que comparecer ante el notario para el asesoramiento previo, como tarde el día antes de la firma. La escritura no puede otorgarse antes del 11 de octubre y la FEIN caduca el 31.",
+  },
+  {
+    nivel: "alta",
+    titulo: "Revisar la declaración de bienes y el importe antes de firmar",
+    detalle:
+      "La declaración de bienes de María del 11 de septiembre pone como profesión «amas de casa», aunque está dada de alta como autónoma desde el 1 de agosto. Declara además la casa de Calle Salud como chalet adosado de 361.327 €, cuando ahora es un solar con la obra empezando, y una deuda de 5.112 € con Alberto Carlos e Isabel Redondo. La FEIN ya va sobre los 265.000 € del contrato real; conviene que la declaración también cuadre antes de ir al notario.",
   },
   {
     nivel: "media",
@@ -358,16 +388,10 @@ export const alertas = [
       "Son dos honorarios distintos: el arquitecto, 2.100 € + IVA (2.541 €), y el aparejador, 2.625 € con IVA incluido (2.169,42 € de base). Están comprometidos pero sin factura ni pago. Según el presupuesto del arquitecto, su dirección de obra se paga un 50 % al comienzo de la obra, un 25 % con la cubierta y un 25 % antes del certificado final, así que el primer 50 % ya toca. Falta cerrar cómo cobra el aparejador.",
   },
   {
-    nivel: "media",
-    titulo: "La cuota que ofreció Unicaja no cuadra con 30 años totales",
-    detalle:
-      "Los 1.053,97 €/mes que ofreció el banco para 265.000 € corresponden exactamente a 360 mensualidades de amortización. Si el plazo son 30 años en total con uno de carencia, se amortiza en 348 y esa misma disposición saldría a 1.078,22 €/mes. Hay que confirmar con Unicaja si su cuota incluía la carencia o si el plazo total son 31 años.",
-  },
-  {
     nivel: "alta",
-    titulo: "Confirmar qué admite el banco como disposición",
+    titulo: "La FEIN no deja margen: desviaciones e IVA salen de ahorros",
     detalle:
-      "Unicaja ofrece hasta 296.000 € y sólo hay previsto disponer 265.000 €. Antes de firmar conviene aclarar si las certificaciones se liberan con IVA o sin él, y si los 15.000 € facturados aparte son certificables. De ello depende que haya que poner 73.078 € de ahorros o bastante menos.",
+      "La FEIN es por 265.000 €, justo el contrato, así que no queda colchón para desviaciones de obra ni para los 15.000 € facturados aparte. Antes de firmar conviene aclarar si las certificaciones se liberan con IVA o sin él: de eso depende cuánto hay que poner de ahorros en cada una.",
   },
   {
     nivel: "media",
@@ -379,7 +403,7 @@ export const alertas = [
     nivel: "media",
     titulo: "Mecánica de disposiciones durante la obra",
     detalle:
-      "Confirmar por escrito con Unicaja qué porcentaje se libera en cada certificación y cómo se calculan las cuotas antes de la disposición total.",
+      "Confirmar por escrito con Unicaja qué porcentaje se libera en cada certificación y cómo se calculan las cuotas antes de la disposición total. La FEIN cobra un 1 % por pagar con «transferencia OMF» desde el préstamo y un 0,4 % por cheque bancario: hay que preguntar si pagar cada certificación a Polo Redondo por transferencia normal lleva comisión.",
   },
   {
     nivel: "media",

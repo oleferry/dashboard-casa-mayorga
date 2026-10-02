@@ -102,10 +102,10 @@ export function SeccionHipoteca() {
           <h3 className="mb-3 text-sm font-semibold">Condiciones de {hipoteca.entidad}</h3>
           <ListaDatos
             datos={[
-              { clave: "Importe máximo ofrecido", valor: euros(hipoteca.importeMaximoOfrecido) },
+              { clave: "Importe de la FEIN", valor: euros(hipoteca.importeMaximoOfrecido) },
               {
                 clave: "Disposición prevista",
-                nota: `Contrato de ${euros(hipoteca.disposicionContrato)} más un ${pct(hipoteca.desviacionPrevista, 0)} de desviación`,
+                nota: "Justo el contrato: las desviaciones salen de ahorros",
                 valor: (
                   <span style={{ color: "var(--marca)" }}>
                     {euros(hipoteca.disposicionPrevista)}
@@ -114,14 +114,14 @@ export function SeccionHipoteca() {
               },
               {
                 clave: "Plazo total",
-                nota: `${h.carenciaAnios} año de carencia + ${h.anios} de amortización`,
+                nota: `${hipoteca.carenciaMeses} meses de carencia + ${hipoteca.plazoMeses} cuotas`,
                 valor: `${h.plazoTotalAnios} años`,
               },
               {
                 clave: "Carencia",
                 nota: "Sólo intereses de lo dispuesto",
                 valor: (
-                  <span style={{ color: "var(--marca)" }}>{h.carenciaAnios} año</span>
+                  <span style={{ color: "var(--marca)" }}>{hipoteca.carenciaMeses} meses</span>
                 ),
               },
               { clave: "Tipo fijo sin bonificar", valor: pct(hipoteca.tinBase, 2) },
@@ -181,13 +181,13 @@ export function SeccionHipoteca() {
                 valor: `${euros(h.cuotaSinBonificar - h.cuotaMensual)}/mes`,
               },
               {
-                clave: `Total devuelto en ${h.anios} años`,
+                clave: `Total devuelto en ${hipoteca.plazoMeses} cuotas`,
                 nota: "Sin contar los intereses de la carencia",
                 valor: euros(h.totalDevuelto),
               },
               { clave: "Intereses de la amortización", valor: euros(h.totalIntereses) },
               {
-                clave: "Intereses del año de carencia",
+                clave: "Intereses de la carencia",
                 nota: "Estimado: el capital se dispone a plazos",
                 valor: euros(h.interesesCarenciaEstimados),
               },
@@ -195,17 +195,17 @@ export function SeccionHipoteca() {
             ]}
           />
           <p className="tenue mt-4 border-t pt-3 text-xs leading-relaxed">
-            Durante el año de carencia sólo se pagan intereses del capital dispuesto, así que la
+            Durante los {hipoteca.carenciaMeses} meses de carencia sólo se pagan intereses del capital dispuesto, así que la
             cifra de carencia es el techo de esa fase: al principio de la obra será mucho menor,
             porque el capital se libera contra certificaciones. Hay que registrar en cada una lo
             que entrega el banco y lo que cobra realmente.
           </p>
-          <p className="mt-3 text-xs leading-relaxed" style={{ color: "var(--aviso)" }}>
-            Unicaja ofreció {euros(h.cuotaOfertadaBanco.cuota)}/mes para{" "}
-            {euros(h.cuotaOfertadaBanco.capital)}, que son exactamente 360 mensualidades. Con{" "}
-            {h.plazoTotalAnios} años totales se amortiza en {hipoteca.plazoMeses} y esa misma
-            disposición saldría a {euros(h.cuotaOfertadaRecalculada)}/mes. Conviene aclarar con el
-            banco de qué plazo hablaba su oferta.
+          <p className="mt-3 text-xs leading-relaxed">
+            La FEIN da {euros(h.cuotaOfertadaBanco.cuota)}/mes para{" "}
+            {euros(h.cuotaOfertadaBanco.capital)} sin bonificar ({pct(hipoteca.tinBase, 2)},{" "}
+            {hipoteca.plazoMeses} cuotas). Con la bonificación prevista bajaría a{" "}
+            {euros(h.cuotaOfertadaRecalculada)}/mes. Los 6 primeros meses van al 2,40% y las
+            bonificaciones se aplican a partir del séptimo.
           </p>
         </Panel>
 
