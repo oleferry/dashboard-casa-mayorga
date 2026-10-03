@@ -20,6 +20,7 @@ import { euros, fecha, fechaCorta, num, pct } from "@/lib/formato";
 import { calcularCapitulos, calcularHipoteca } from "@/lib/calculos";
 import { alertas, financiacion, hipoteca, hitos, obligaciones, proyecto } from "@/lib/proyecto";
 import { gruposDocumentales } from "@/lib/documentos";
+import { ComparativaHipotecas } from "./comparativa-hipotecas";
 
 /* ------------------------------------------------------- Capítulos de obra */
 
@@ -256,6 +257,8 @@ export function SeccionHipoteca() {
           </div>
         </Panel>
       </div>
+
+      <ComparativaHipotecas />
     </Seccion>
   );
 }
