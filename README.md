@@ -17,10 +17,12 @@ concepto, los pagos realizados, la hipoteca y todo el expediente documental.
 | **Ejecución de obra** | Contrato principal, trabajos aparte, IVA, reserva del 5%, coste por m² y referencias presupuestarias |
 | **Certificaciones** | Registro de obra ejecutada: avance, reparto entre hipoteca y ahorros, y estado de cada certificación |
 | **Capítulos de obra** | Los 15 capítulos del proyecto técnico con su peso y la estimación operativa sobre el contrato |
-| **Hipoteca** | Condiciones de Unicaja, bonificaciones, coste mensual e intereses totales |
+| **Hipoteca** | Condiciones de Unicaja, bonificaciones, coste mensual e intereses totales, y comparativa con CaixaBank |
+| **Hipoteca: condiciones y trámites** | Condiciones de la FEIN, seguros, incoherencias de la documentación, dudas enviadas a Unicaja y cita en la notaría. Se mantiene en `lib/condiciones.ts` |
 | **Cronología** | Hitos administrativos y económicos |
 | **Diseño e ideas** | Lo que fijan el proyecto y la normativa, lo que queda por elegir, y las ideas propias leídas de la pestaña `Ideas` |
 | **Cocina: proveedores** | Base de datos de los estudios a los que se ha pedido presupuesto: estado, último movimiento, próximo paso, contacto y enlace al hilo de Gmail. Se mantiene en `lib/cocinas.ts` |
+| **Anexo: gimnasio y trastero** | Metros lineales de cada pared del edificio del patio (trastero, gimnasio y aseo). Se mantiene en `lib/anexo.ts` |
 | **Documentación** | Enlaces a Google Drive agrupados por tipo |
 | **Seguros y obligaciones** | Qué exigen la LOE y el RD 1627/1997 en autopromoción, qué le toca al constructor y qué decisiones siguen abiertas |
 | **Alertas** | Decisiones abiertas y riesgos por nivel |

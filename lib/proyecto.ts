@@ -285,13 +285,38 @@ export const hitos = [
     estado: "hecho",
   },
   {
+    fecha: "2026-10-05",
+    titulo: "Unicaja da de alta la operación en el Portal Notarial; dudas enviadas a Carlos Velasco",
+    estado: "hecho",
+  },
+  {
+    fecha: "2026-10-07",
+    titulo: "Notaría a las 13:00: consulta previa y acta de asesoramiento (Daniel y María)",
+    estado: "previsto",
+  },
+  {
     fecha: "2026-10-11",
-    titulo: "Primera fecha posible para firmar la hipoteca ante notario",
+    titulo: "Primera fecha posible para firmar la hipoteca (el 15/10 si cuenta desde el alta en el portal)",
+    estado: "previsto",
+  },
+  {
+    fecha: "2026-10-20",
+    titulo: "Fecha pedida a Unicaja para responder las dudas",
     estado: "previsto",
   },
   {
     fecha: "2026-10-31",
     titulo: "Caduca la FEIN: hay que haber firmado antes",
+    estado: "previsto",
+  },
+  {
+    fecha: "2027-01-15",
+    titulo: "Caduca la tasación",
+    estado: "previsto",
+  },
+  {
+    fecha: "2027-04-02",
+    titulo: "Primera revisión de las bonificaciones de la hipoteca",
     estado: "previsto",
   },
 ] as { fecha: string; titulo: string; estado: "hecho" | "previsto" }[];
@@ -329,20 +354,20 @@ export const obligaciones = [
     quien: "Promotor",
     caracter: "exento" as const,
     urgencia: "alta" as const,
-    plazo: "Decisión irreversible: el OCT tiene que supervisar desde cimentación",
+    plazo: "Decidido: no se contrata. Pedir a Unicaja que lo quite de la FEIN por escrito",
     base: "LOE, art. 19.1.c y Disposición Adicional Segunda",
     coste: "Filas «Seguro de daños materiales decenal» y «Plan de Control de Calidad a la OCT», ambas a 0 €",
     detalle:
-      "El autopromotor de una única vivienda unifamiliar para uso propio está exento. Pero si se vende dentro de los 10 años, la ley obliga a contratarlo por el tiempo restante, y ni el notario autoriza ni el Registro inscribe la venta sin acreditarlo, salvo exoneración expresa del comprador. El problema: no se puede contratar a posteriori sin que un OCT haya supervisado la obra. La pregunta real no es si es obligatorio, sino si se descarta vender en 10 años.",
+      "El autopromotor de una única vivienda unifamiliar para uso propio está exento. Pero si se vende dentro de los 10 años, la ley obliga a contratarlo por el tiempo restante, y ni el notario autoriza ni el Registro inscribe la venta sin acreditarlo, salvo exoneración expresa del comprador. El problema: no se puede contratar a posteriori sin que un OCT haya supervisado la obra. La pregunta real no es si es obligatorio, sino si se descarta vender en 10 años: lo hemos descartado, así que no se contrata. La FEIN de Unicaja lo pide, pero la ley exime al autopromotor.",
   },
   {
     concepto: "Seguro Todo Riesgo Construcción",
     quien: "Promotor",
-    caracter: "opcional" as const,
-    urgencia: "media" as const,
-    plazo: "Antes de la FEIN: el banco puede exigirlo para permitir disposiciones",
-    base: "No previsto en la LOE; exigencia habitual de las entidades",
-    coste: "≈ 900–1.500 € (0,3–0,5% del presupuesto) · fila a 0 € en la hoja",
+    caracter: "obligatorio" as const,
+    urgencia: "alta" as const,
+    plazo: "A la firma de la hipoteca y mientras dure la obra",
+    base: "No previsto en la LOE; lo exige la FEIN de Unicaja",
+    coste: "370,10 € de pago único con Unicaja según la FEIN · fila a 0 € en la hoja",
     detalle:
       "Cubre daños a la obra en curso —incendio, robo de material, temporal, colapso— y suele incluir responsabilidad civil del promotor. Es el seguro que de verdad protege el dinero ya invertido mientras la casa está a medias.",
   },
@@ -385,9 +410,9 @@ export const alertas = [
   },
   {
     nivel: "alta",
-    titulo: "Firmar la hipoteca entre el 11 y el 31 de octubre, después de pasar por el notario",
+    titulo: "Notaría el 7/10 a las 13:00; firmar la hipoteca entre el 11 y el 31 de octubre",
     detalle:
-      "La FEIN del 1 de octubre es por 265.000 € a 30 años: 18 meses de carencia y 342 cuotas. Va al 2,40 % fijo los 6 primeros meses y al 3,40 % después, con hasta un punto de bonificación (el tipo nunca baja del 2,40 %). Sin bonificar, la cuota es de 1.211,33 €; en la carencia, unos 540 € si estuviera todo dispuesto. Los dos tenéis que comparecer ante el notario para el asesoramiento previo, como tarde el día antes de la firma. La escritura no puede otorgarse antes del 11 de octubre y la FEIN caduca el 31.",
+      "La FEIN del 1 de octubre es por 265.000 € a 30 años: 18 meses de carencia y 342 cuotas. Va al 2,40 % fijo los 6 primeros meses y al 3,40 % después, con hasta un punto de bonificación (el tipo nunca baja del 2,40 %). Sin bonificar, la cuota es de 1.211,33 €; en la carencia, unos 540 € si estuviera todo dispuesto. Los dos tenéis que comparecer ante el notario para el asesoramiento previo, como tarde el día antes de la firma. Tenéis cita en la notaría el miércoles 7 de octubre a las 13:00 para la consulta previa. La escritura no puede otorgarse antes del 11 de octubre (el 15 si el notario cuenta desde el alta en el portal) y la FEIN caduca el 31.",
   },
   {
     nivel: "alta",
@@ -399,7 +424,7 @@ export const alertas = [
     nivel: "media",
     titulo: "Falta el precio final de los seguros de la hipoteca",
     detalle:
-      "Para cerrar las bonificaciones y el coste mensual hay que pedir precio a Unicaja y compararlo fuera: todo riesgo de construcción (la FEIN da 370,10 € de pago único; es obligatorio desde la firma, con Unicaja o con otra aseguradora que la ponga de beneficiaria), seguro de hogar para cuando acabe la obra (el panel estima 450 €/año), y traspaso del coche, que tiene que llegar a 700 €/año. El seguro de salud va aparte.",
+      "Para cerrar las bonificaciones y el coste mensual hay que pedir precio a Unicaja y compararlo fuera: todo riesgo de construcción (la FEIN da 370,10 € de pago único; es obligatorio desde la firma, con Unicaja o con otra aseguradora que la ponga de beneficiaria), seguro de hogar para cuando acabe la obra (el panel estima 450 €/año), y traspaso del coche, que tiene que llegar a 700 €/año. El seguro de daños obligatorio cuesta unos 61 €/año en cualquier compañía. El de vida se contrata fuera (referencia ≈ 444 €/año para Daniel) y el decenal no se contrata. El seguro de salud va aparte.",
   },
   {
     nivel: "media",
