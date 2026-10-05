@@ -135,14 +135,12 @@ export function ComparativaHipotecas() {
         <h3 className="mb-2 text-sm font-semibold">Cómo leer la comparativa</h3>
         <ul className="tenue list-disc space-y-1.5 pl-5 text-xs leading-relaxed">
           <li>
-            Euro a euro salen casi iguales: con lo que compensa contratar, Unicaja queda al 2,55 % y
-            CaixaBank al 2,60 %. Con todo contratado, 2,40 % frente a 2,45 %. La diferencia de cuota
-            viene sobre todo de que CaixaBank presta 25.000 € más.
+            Con lo que compensa contratar, Unicaja queda en el 2,45 % y CaixaBank en el 2,60 %. La diferencia de cuota viene sobre todo de que CaixaBank presta 25.000 € más.
           </li>
           <li>
             La alarma de CaixaBank no compensa: 798,60 €/año para rebajar un 0,15 %, que son unos 435
-            €/año de intereses al principio y menos cada año. Unicaja llega a su tope sin seguro de
-            vida si se trasladan 60.000 € en fondos.
+            €/año de intereses al principio y menos cada año. Unicaja llega al 2,45 % sin seguro de
+            vida ni fondos, con el coche y el Plan Uniseguro.
           </li>
           <li>
             CaixaBank no entrega nada hasta que la tasación certifique 138.519 € de obra: la 1.ª

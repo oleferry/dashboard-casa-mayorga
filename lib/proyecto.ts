@@ -153,50 +153,76 @@ export const hipoteca = {
   plazoMeses: 342,
   carenciaMeses: 18,
   tinBase: 0.034,
-  bonificacionTotal: 0.0085,
-  tinFinal: 0.0255,
+  /**
+   * Plan: domiciliación y tarjetas (−0,50), hogar o todo riesgo de
+   * construcción (−0,20), coche (−0,20) y Plan Uniseguro (−0,05). Los fondos
+   * siguen en Finizens, que no bonifica.
+   */
+  bonificacionTotal: 0.0095,
+  tinFinal: 0.0245,
   /** Cuota de la FEIN para 265.000 €, sin bonificar (3,40 %, 342 cuotas). */
   cuotaReferencia: { capital: 265000, cuota: 1211.33 },
   comisionApertura: 0,
   comisionAmortizacionAnticipada: 0.005,
   tasacion: 424018.8,
+  /** Estimación hasta tener el precio de Unicaja. */
   seguroHogarAnual: 450,
-  seguroSaludAnual: 350,
+  /** El seguro de salud se contrata aparte: no bonifica ni es coste bancario. */
+  seguroSaludAnual: 0,
   bonificaciones: [
     {
-      vinculacion: "Domiciliación de ingresos y dos tarjetas",
+      vinculacion: "Domiciliación de ingresos y tarjetas de crédito",
       puntos: 0.005,
-      requisito: "1.200 €/año o dos compras mensuales por tarjeta",
+      requisito:
+        "Cuota de autónomos de María domiciliada y una tarjeta de crédito para cada uno, en pago total a fin de mes. En los 6 meses previos a cada revisión: 600 € de compras entre los dos o 2 compras al mes. Usarlas desde la firma",
       estado: "prevista",
     },
     {
-      vinculacion: "Seguro de hogar",
+      vinculacion: "Todo riesgo de construcción y, al acabar, seguro de hogar",
       puntos: 0.002,
-      requisito: "≈ 450 €/año",
-      estado: "prevista",
-    },
-    {
-      vinculacion: "Plan UniSeguro",
-      puntos: 0.0005,
-      requisito: "Fraccionamiento mensual sin sobrecoste",
-      estado: "prevista",
-    },
-    {
-      vinculacion: "Fondo de inversión o plan de pensiones",
-      puntos: 0.001,
-      requisito: "Producto pendiente de escoger",
+      requisito:
+        "Con Unicaja. Todo riesgo: 370,10 € de pago único según la FEIN; hogar: precio pendiente. Si el todo riesgo se hace fuera, el hogar tiene que estar contratado antes de la revisión siguiente al fin de obra",
       estado: "pendiente",
+    },
+    {
+      vinculacion: "Seguro del coche con Unicaja",
+      puntos: 0.002,
+      requisito:
+        "Traspaso de la póliza actual, ≈ 700 €/año. Las primas pagadas en los 12 meses previos a la revisión tienen que llegar a 700 €; con menos sólo bonifica −0,10",
+      estado: "pendiente",
+    },
+    {
+      vinculacion: "Plan Uniseguro",
+      puntos: 0.0005,
+      requisito:
+        "Pagar a través de él al menos 1.000 €/año de primas: coche y hogar ya llegan. Confirmar que el fraccionamiento no tiene recargo",
+      estado: "prevista",
+    },
+    {
+      vinculacion: "Seguro de salud",
+      puntos: 0,
+      requisito: "Se contrata aparte: con el coche ya se llega al tramo máximo de salud, auto y vida libre",
+      estado: "descartada",
     },
     {
       vinculacion: "Seguro de vida de Unicaja",
       puntos: 0,
-      requisito: "No se contrata; se renuncia a su 0,20%",
+      requisito: "No hace falta para llegar al tope",
+      estado: "descartada",
+    },
+    {
+      vinculacion: "Fondos o planes en Unicaja",
+      puntos: 0,
+      requisito: "Los fondos siguen en Finizens, que no bonifica. Se renuncia a la última décima",
       estado: "descartada",
     },
   ] as { vinculacion: string; puntos: number; requisito: string; estado: string }[],
   alternativasFondo: [
-    { alternativa: "Fondo de inversión (0,6% de 265.000 €)", aportacionAnual: 1590 },
-    { alternativa: "Plan de pensiones", aportacionAnual: 1500 },
+    { alternativa: "Seguir con Finizens, sin esta bonificación", aportacionAnual: 0 },
+    {
+      alternativa: "Aportar a fondos de Unicaja el 0,6 % del capital pendiente cada semestre",
+      aportacionAnual: 3180,
+    },
   ],
 };
 
@@ -368,6 +394,12 @@ export const alertas = [
     titulo: "Revisar la declaración de bienes y el importe antes de firmar",
     detalle:
       "La declaración de bienes de María del 11 de septiembre pone como profesión «amas de casa», aunque está dada de alta como autónoma desde el 1 de agosto. Declara además la casa de Calle Salud como chalet adosado de 361.327 €, cuando ahora es un solar con la obra empezando, y una deuda de 5.112 € con Alberto Carlos e Isabel Redondo. La FEIN ya va sobre los 265.000 € del contrato real; conviene que la declaración también cuadre antes de ir al notario.",
+  },
+  {
+    nivel: "media",
+    titulo: "Falta el precio final de los seguros de la hipoteca",
+    detalle:
+      "Para cerrar las bonificaciones y el coste mensual hay que pedir precio a Unicaja y compararlo fuera: todo riesgo de construcción (la FEIN da 370,10 € de pago único; es obligatorio desde la firma, con Unicaja o con otra aseguradora que la ponga de beneficiaria), seguro de hogar para cuando acabe la obra (el panel estima 450 €/año), y traspaso del coche, que tiene que llegar a 700 €/año. El seguro de salud va aparte.",
   },
   {
     nivel: "media",

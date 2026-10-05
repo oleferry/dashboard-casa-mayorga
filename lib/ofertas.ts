@@ -43,9 +43,9 @@ export const ofertasHipoteca: OfertaHipoteca[] = [
     tipoInicial: { tin: 0.024, meses: 6 },
     tinSinBonificar: 0.034,
     bonificacionMaxima: 0.01,
-    tinRazonable: 0.0255,
+    tinRazonable: 0.0245,
     tinRazonableNota:
-      "Domiciliación y tarjeta, seguro de hogar, Plan Uniseguro y aportaciones a fondo (−0,85), sin seguro de vida",
+      "Domiciliación y tarjetas, hogar, coche y Plan Uniseguro (−0,95), sin seguro de vida ni fondos",
     bonificaciones: [
       "Domiciliación de ingresos y tarjeta de crédito: −0,50",
       "Saldo en fondos o planes ≥ 60.000 €: −0,40 (de 15.000 a 60.000 €, de −0,10 a −0,30)",
@@ -56,7 +56,7 @@ export const ofertasHipoteca: OfertaHipoteca[] = [
       "Aportaciones a fondos o planes: −0,10 · Plan Uniseguro: −0,05",
     ],
     costeBonificaciones:
-      "Se llega al tope del 2,40 % sin seguro de vida: domiciliación, hogar y 60.000 € en fondos de Unicaja suman más de un punto. Los fondos siguen siendo patrimonio.",
+      "Se llega al 2,45 % sin seguro de vida ni fondos: tarjetas, todo riesgo u hogar, el coche que ya se paga y el Plan Uniseguro para pagar esas primas. El 2,40 % exigiría además fondos en Unicaja.",
     disposiciones:
       "Contra certificaciones de obra, con el detalle por confirmar por escrito. La FEIN cobra un 1 % por «transferencia OMF» y un 0,4 % por cheque bancario.",
     amortizacionAnticipada: "Hasta un 0,5 % los 10 primeros años, y sólo si hay pérdida para el banco",

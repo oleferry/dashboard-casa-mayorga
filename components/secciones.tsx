@@ -153,10 +153,14 @@ export function SeccionHipoteca() {
                 clave: "Cuota tras la carencia",
                 valor: `${euros(h.cuotaMensual)}/mes`,
               },
-              { clave: "Seguro de hogar prorrateado", valor: `${euros(h.seguroMensual)}/mes` },
+              {
+                clave: "Seguro de hogar prorrateado",
+                nota: "Estimado; falta el precio de Unicaja",
+                valor: `${euros(h.seguroMensual)}/mes`,
+              },
               {
                 clave: "Seguro de salud prorrateado",
-                nota: hipoteca.seguroSaludAnual > 0 ? undefined : "Pendiente de concretar",
+                nota: hipoteca.seguroSaludAnual > 0 ? undefined : "Se contrata aparte; no cuenta",
                 valor:
                   hipoteca.seguroSaludAnual > 0 ? `${euros(h.seguroSaludMensual)}/mes` : "—",
               },

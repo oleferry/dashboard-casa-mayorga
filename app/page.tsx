@@ -332,7 +332,7 @@ export default async function Panel_() {
                   {euros(hipoteca.seguroHogarAnual / 12)}/mes)
                   {hipoteca.seguroSaludAnual > 0
                     ? ` y seguro de salud (${euros(hipoteca.seguroSaludAnual / 12)}/mes)`
-                    : "; el seguro de salud todavía no está incluido, falta la cifra"}
+                    : "; el seguro de salud se contrata aparte y no cuenta como coste de la hipoteca"}
                   . Durante los {hipoteca.carenciaMeses} meses de carencia sólo se pagan intereses de lo dispuesto, así que la
                   cifra pequeña es el techo de esa fase: al principio será mucho menor, porque el
                   capital se dispone a plazos.
