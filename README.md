@@ -22,7 +22,7 @@ concepto, los pagos realizados, la hipoteca y todo el expediente documental.
 | **Cronología** | Hitos administrativos y económicos |
 | **Diseño e ideas** | Lo que fijan el proyecto y la normativa, lo que queda por elegir, y las ideas propias leídas de la pestaña `Ideas` |
 | **Cocina: proveedores** | Base de datos de los estudios a los que se ha pedido presupuesto: estado, último movimiento, próximo paso, contacto y enlace al hilo de Gmail. Se mantiene en `lib/cocinas.ts` |
-| **Anexo: gimnasio y trastero** | Metros lineales de cada pared del edificio del patio (trastero, gimnasio y aseo). Se mantiene en `lib/anexo.ts` |
+| **Anexo: gimnasio, trastero y solera** | Plano de la distribución propuesta (cinta, Zwift Ride, rack, suelo, estanterías, bicis, aseo y coche) y metros lineales de cada pared. Se mantiene en `lib/anexo.ts` y `components/plano-anexo.tsx` |
 | **Documentación** | Enlaces a Google Drive agrupados por tipo |
 | **Seguros y obligaciones** | Qué exigen la LOE y el RD 1627/1997 en autopromoción, qué le toca al constructor y qué decisiones siguen abiertas |
 | **Alertas** | Decisiones abiertas y riesgos por nivel |

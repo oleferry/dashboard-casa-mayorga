@@ -1,7 +1,8 @@
 import { Dumbbell } from "lucide-react";
 import { Panel, Seccion, Tabla, Td, Th } from "./ui";
 import { num } from "@/lib/formato";
-import { alturaAnexo, salasAnexo } from "@/lib/anexo";
+import { alturaAnexo, propuestaAnexo, salasAnexo } from "@/lib/anexo";
+import { PlanoAnexo } from "./plano-anexo";
 
 const metros = (n: number) => `${num(n)} m`;
 
@@ -10,10 +11,24 @@ export function SeccionAnexo() {
     <Seccion
       id="anexo"
       icono={Dumbbell}
-      titulo="Anexo: gimnasio y trastero"
-      descripcion={`Edificio del fondo del patio, junto al garaje. Medidas interiores del plano A03; altura libre de ${metros(alturaAnexo)} en la parte baja de la cubierta.`}
+      titulo="Anexo: gimnasio, trastero y solera"
+      descripcion={`Edificio del fondo del patio, con la solera para el coche. Las tablas recogen las medidas interiores del plano A03; la altura libre es de ${metros(alturaAnexo)} en la parte baja de la cubierta.`}
     >
-      <div className="grid gap-4 lg:grid-cols-3">
+      <Panel className="mb-4">
+        <h3 className="mb-1 text-sm font-semibold">Distribución propuesta</h3>
+        <p className="suave mb-3 text-xs leading-relaxed">
+          Con el gimnasio y el aseo desplazados 0,30 m hacia la solera. Medidas aproximadas: los muros se
+          dibujan rectos, aunque en el plano están ligeramente en ángulo.
+        </p>
+        <PlanoAnexo />
+        <ul className="tenue mt-3 list-disc space-y-1 border-t pt-3 pl-5 text-xs leading-relaxed">
+          {propuestaAnexo.map((p) => (
+            <li key={p}>{p}</li>
+          ))}
+        </ul>
+      </Panel>
+
+      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         {salasAnexo.map((s) => {
           const perimetro = s.paredes.reduce((a, p) => a + p.metros, 0);
           return (
