@@ -274,6 +274,14 @@ export const gruposDocumentales: GrupoDocumental[] = [
         url: carpeta("1PBJ9NkPlTE1pY7mjNMVxzaiBiZclTtKj"),
       },
       {
+        titulo: "Préstamo familiar — contrato (30.000 €)",
+        descripcion:
+          "Préstamo sin intereses de los padres de Daniel a Daniel y María: transferencia el 10/10/2026 y devolución el 10/04/2028, con amortización anticipada libre. Pendiente: rellenar domicilio y cuentas, firmar y presentar el modelo 600 (exento).",
+        fecha: "2026-10-10",
+        url: archivo("1R13DHDFcZcuoa4nxewHOS4w7VFiIstVi"),
+        clave: true,
+      },
+      {
         titulo: "Dossier de hipoteca de autopromoción",
         descripcion: "Documento presentado a las entidades.",
         fecha: "2025-11-30",

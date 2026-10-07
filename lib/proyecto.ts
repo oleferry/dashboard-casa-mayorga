@@ -295,6 +295,11 @@ export const hitos = [
     estado: "previsto",
   },
   {
+    fecha: "2026-10-10",
+    titulo: "Préstamo familiar de 30.000 € de los padres de Daniel: firma del contrato y transferencia",
+    estado: "previsto",
+  },
+  {
     fecha: "2026-10-11",
     titulo: "Primera fecha posible para firmar la hipoteca (el 15/10 si cuenta desde el alta en el portal)",
     estado: "previsto",
@@ -310,6 +315,11 @@ export const hitos = [
     estado: "previsto",
   },
   {
+    fecha: "2026-11-20",
+    titulo: "Presentar el modelo 600 del préstamo familiar (exento; plazo legal hasta el ≈ 24/11)",
+    estado: "previsto",
+  },
+  {
     fecha: "2027-01-15",
     titulo: "Caduca la tasación",
     estado: "previsto",
@@ -317,6 +327,11 @@ export const hitos = [
   {
     fecha: "2027-04-02",
     titulo: "Primera revisión de las bonificaciones de la hipoteca",
+    estado: "previsto",
+  },
+  {
+    fecha: "2028-04-10",
+    titulo: "Devolución del préstamo familiar: 30.000 € en un único pago",
     estado: "previsto",
   },
 ] as { fecha: string; titulo: string; estado: "hecho" | "previsto" }[];
@@ -396,6 +411,12 @@ export const obligaciones = [
 
 /** Alertas y decisiones abiertas. */
 export const alertas = [
+  {
+    nivel: "alta",
+    titulo: "Presentar el modelo 600 del préstamo familiar antes del 20 de noviembre",
+    detalle:
+      "Los padres de Daniel prestan 30.000 € sin intereses, con transferencia el 10 de octubre y devolución en un único pago el 10 de abril de 2028 (se puede adelantar sin penalización). Prestatarios: Daniel y María. El préstamo está exento del impuesto de transmisiones, pero hay que presentar el modelo 600 en la Junta de Castilla y León en los 30 días hábiles siguientes a la firma (hasta el ≈ 24/11), adjuntando el contrato. Sin ese paso, Hacienda puede tratarlo como una donación. Antes de firmar faltan por rellenar el domicilio de los padres y las dos cuentas. Es una deuda: si Unicaja pregunta por deudas o por el origen de los fondos propios, tiene que constar.",
+  },
   {
     nivel: "alta",
     titulo: "La obra ha empezado y la hipoteca no está firmada",
