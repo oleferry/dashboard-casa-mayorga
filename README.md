@@ -20,9 +20,8 @@ concepto, los pagos realizados, la hipoteca y todo el expediente documental.
 | **Hipoteca** | Condiciones de Unicaja, bonificaciones, coste mensual e intereses totales, y comparativa con CaixaBank |
 | **Hipoteca: condiciones y trámites** | Condiciones de la FEIN, seguros, incoherencias de la documentación, dudas enviadas a Unicaja y cita en la notaría. Se mantiene en `lib/condiciones.ts` |
 | **Cronología** | Hitos administrativos y económicos |
-| **Diseño e ideas** | Lo que fijan el proyecto y la normativa, lo que queda por elegir, y las ideas propias leídas de la pestaña `Ideas` |
+| **Diseño e ideas** | Lo que fijan el proyecto y la normativa, lo que queda por elegir, las ideas propias leídas de la pestaña `Ideas`, y el anexo (gimnasio, trastero y solera) con su plano y metros lineales en `lib/anexo.ts` y `components/plano-anexo.tsx` |
 | **Cocina: proveedores** | Base de datos de los estudios a los que se ha pedido presupuesto: estado, último movimiento, próximo paso, contacto y enlace al hilo de Gmail. Se mantiene en `lib/cocinas.ts` |
-| **Anexo: gimnasio, trastero y solera** | Plano de la distribución propuesta (cinta, Zwift Ride, rack, suelo, estanterías, bicis, aseo y coche) y metros lineales de cada pared. Se mantiene en `lib/anexo.ts` y `components/plano-anexo.tsx` |
 | **Documentación** | Enlaces a Google Drive agrupados por tipo |
 | **Seguros y obligaciones** | Qué exigen la LOE y el RD 1627/1997 en autopromoción, qué le toca al constructor y qué decisiones siguen abiertas |
 | **Alertas** | Decisiones abiertas y riesgos por nivel |

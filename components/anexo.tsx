@@ -1,19 +1,23 @@
-import { Dumbbell } from "lucide-react";
-import { Panel, Seccion, Tabla, Td, Th } from "./ui";
+import { Panel, Tabla, Td, Th } from "./ui";
 import { num } from "@/lib/formato";
 import { alturaAnexo, propuestaAnexo, salasAnexo } from "@/lib/anexo";
 import { PlanoAnexo } from "./plano-anexo";
 
 const metros = (n: number) => `${num(n)} m`;
 
-export function SeccionAnexo() {
+/** Bloque del anexo dentro de la sección de diseño. */
+export function BloqueAnexo() {
   return (
-    <Seccion
-      id="anexo"
-      icono={Dumbbell}
-      titulo="Anexo: gimnasio, trastero y solera"
-      descripcion={`Edificio del fondo del patio, con la solera para el coche. Las tablas recogen las medidas interiores del plano A03; la altura libre es de ${metros(alturaAnexo)} en la parte baja de la cubierta.`}
-    >
+    <div id="anexo" className="mt-6 scroll-mt-24">
+      <div className="mb-3">
+        <h3 className="text-base font-semibold">Anexo: gimnasio, trastero y solera</h3>
+        <p className="tenue mt-1 max-w-3xl text-xs leading-relaxed">
+          Edificio del fondo del patio, con la solera para el coche. Las tablas recogen las medidas
+          interiores del plano A03; la altura libre es de {metros(alturaAnexo)} en la parte baja de la
+          cubierta.
+        </p>
+      </div>
+
       <Panel className="mb-4">
         <h3 className="mb-1 text-sm font-semibold">Distribución propuesta</h3>
         <p className="suave mb-3 text-xs leading-relaxed">
@@ -73,6 +77,6 @@ export function SeccionAnexo() {
           );
         })}
       </div>
-    </Seccion>
+    </div>
   );
 }

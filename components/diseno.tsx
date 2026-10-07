@@ -1,5 +1,6 @@
 import { Lightbulb } from "lucide-react";
 import { Etiqueta, Panel, Seccion, Td, Th } from "./ui";
+import { BloqueAnexo } from "./anexo";
 import { fechaCorta } from "@/lib/formato";
 import { hojaCostes } from "@/lib/documentos";
 import { COLUMNAS_IDEAS, PESTANA_IDEAS, type DatosIdeas, type EstadoIdea } from "@/lib/ideas";
@@ -254,6 +255,8 @@ export function SeccionDiseno({ ideas }: { ideas: DatosIdeas }) {
           </Panel>
         )}
       </div>
+
+      <BloqueAnexo />
     </Seccion>
   );
 }
